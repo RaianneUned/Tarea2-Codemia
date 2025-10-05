@@ -40,7 +40,7 @@ public class AccountController : Controller
         var record = new UserRecord
         {
             Username = model.Username.Trim(),
-            Password = model.Password, // Nota: en un entorno real se debe hashear.
+            Password = model.Password,
             FirstName = model.FirstName.Trim(),
             LastName = model.LastName.Trim(),
             Email = model.Email.Trim()
