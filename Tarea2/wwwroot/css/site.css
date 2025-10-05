@@ -1,0 +1,146 @@
+/* Estrellas de calificación */
+.rating-star {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.rating-star .material-symbols-outlined {
+  transition: color 0.2s;
+  color: #d1d5db;
+}
+
+.rating-star.active .material-symbols-outlined,
+.rating-star:hover .material-symbols-outlined,
+.rating-star:focus .material-symbols-outlined {
+  color: #facc15;
+}
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  overflow-y: auto;
+}
+
+.layout-main {
+  padding-bottom: 3rem;
+}
+
+.login-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid #0d6efd;
+  background-color: #ffffff;
+  color: #0d6efd;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.login-circle:hover,
+.login-circle:focus {
+  background-color: #0d6efd;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.login-circle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.3);
+  outline: none;
+}
+
+.login-circle-label {
+  pointer-events: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-overlay.active {
+  display: flex;
+}
+
+.login-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.login-overlay-panel {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 90%);
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.2);
+  animation: overlay-entry 0.3s ease;
+}
+
+.overlay-title {
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.overlay-form .form-control {
+  min-height: 3rem;
+}
+
+.close-overlay {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  border: none;
+  background: transparent;
+  font-size: 2rem;
+  line-height: 1;
+  color: #6c757d;
+}
+
+.close-overlay:hover,
+.close-overlay:focus {
+  color: #0d6efd;
+}
+
+@keyframes overlay-entry {
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

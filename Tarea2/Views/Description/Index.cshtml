@@ -1,0 +1,693 @@
+@model Tarea2.Models.ProjectDetailViewModel
+@using System.Text.Json
+@using System.Globalization
+@using System.Text
+
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["UseFullWidthLayout"] = true;
+    ViewData["BodyClass"] = "font-display bg-white text-gray-800";
+}
+
+@section HeadContent {
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <style>
+        .rating {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            gap: 0.15rem;
+        }
+
+        .rating__input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .rating__label {
+            cursor: pointer;
+            font-size: 2.25rem;
+            line-height: 1;
+            color: #d1d5db;
+            transition: color 0.15s ease-in-out, transform 0.15s ease-in-out;
+        }
+
+        .rating__label::before {
+            content: '★';
+        }
+
+        .rating__input:checked ~ .rating__label,
+        .rating__label:hover,
+        .rating__label:hover ~ .rating__label {
+            color: #facc15;
+        }
+
+        .rating__input:focus-visible + .rating__label {
+            outline: 2px solid #2563eb;
+            outline-offset: 4px;
+        }
+    </style>
+}
+
+@functions {
+    private static string FormatRelativeTime(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return "Hace unos segundos";
+        }
+
+        if (DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out var timestamp))
+        {
+            var diff = DateTime.UtcNow - timestamp;
+            if (diff.TotalMinutes < 1)
+            {
+                return "Hace unos segundos";
+            }
+            if (diff.TotalHours < 1)
+            {
+                var minutes = Math.Max(1, (int)Math.Floor(diff.TotalMinutes));
+                return $"Hace {minutes} minuto{(minutes == 1 ? string.Empty : "s" )}";
+            }
+            if (diff.TotalDays < 1)
+            {
+                var hours = Math.Max(1, (int)Math.Floor(diff.TotalHours));
+                return $"Hace {hours} hora{(hours == 1 ? string.Empty : "s" )}";
+            }
+            if (diff.TotalDays < 30)
+            {
+                var days = Math.Max(1, (int)Math.Floor(diff.TotalDays));
+                return $"Hace {days} día{(days == 1 ? string.Empty : "s" )}";
+            }
+            if (diff.TotalDays < 365)
+            {
+                var months = Math.Max(1, (int)Math.Floor(diff.TotalDays / 30));
+                return $"Hace {months} mes{(months == 1 ? string.Empty : "es" )}";
+            }
+
+            var years = Math.Max(1, (int)Math.Floor(diff.TotalDays / 365));
+            return $"Hace {years} año{(years == 1 ? string.Empty : "s" )}";
+        }
+
+        return value;
+    }
+
+    private static string RenderStaticStars(double rating)
+    {
+        var rounded = (int)Math.Round(rating);
+        var builder = new StringBuilder();
+        builder.Append("<div class=\"flex items-center gap-1 text-amber-400\">");
+        for (var i = 1; i <= 5; i++)
+        {
+            builder.Append(i <= rounded ? "<span class=\"text-base\">★</span>" : "<span class=\"text-base text-gray-300\">☆</span>");
+        }
+        builder.Append("</div>");
+        return builder.ToString();
+    }
+}
+
+<section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20">
+    <nav aria-label="Breadcrumb" class="flex text-sm mb-6">
+        <ol class="inline-flex items-center space-x-1 md:space-x-2">
+            <li class="inline-flex items-center">
+                <a class="inline-flex items-center text-gray-500 hover:text-primary" asp-controller="Home" asp-action="Index">@Model.BreadcrumbParent</a>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+                    <span class="ml-1 font-medium text-gray-700">Detalles del Proyecto</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <div class="space-y-12">
+        <section>
+            <h1 class="text-3xl font-bold text-gray-900 mb-3">@Model.Title</h1>
+            <p class="text-gray-600 leading-relaxed">@Model.Overview</p>
+            <p class="mt-3 text-sm text-gray-500">
+                Autor:
+                <a class="font-semibold text-primary hover:underline" asp-controller="Home" asp-action="Author" asp-route-username="@Model.AuthorUsername">
+                    @(!string.IsNullOrWhiteSpace(Model.AuthorDisplayName) ? Model.AuthorDisplayName : Model.AuthorUsername)
+                </a>
+            </p>
+        </section>
+
+        @if (Model.Attachments.Any())
+        {
+            <section>
+                <h2 class="text-xl font-bold text-gray-900">Archivos Adjuntos</h2>
+                <div class="mt-4 divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
+                    @foreach (var attachment in Model.Attachments)
+                    {
+                        <div class="flex items-center justify-between p-4">
+                            <div class="flex items-center gap-4">
+                                <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100">
+                                    <span class="material-symbols-outlined text-2xl text-gray-500">description</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-800">@attachment.FileName</p>
+                                    <p class="text-sm text-gray-500">@attachment.FileType</p>
+                                </div>
+                            </div>
+                            <a class="flex items-center justify-center rounded-lg bg-primary/10 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/20" href="@attachment.DownloadUrl">
+                                <span class="material-symbols-outlined mr-2 text-base">download</span>
+                                Descargar
+                            </a>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+
+        <section>
+            <h2 class="text-xl font-bold text-gray-900">Revisiones de Pares</h2>
+            <div class="mt-4 rounded-lg border border-gray-200 bg-white p-6">
+                <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-12">
+                <div class="flex flex-col items-center">
+                        <p id="averageRatingValue" class="text-5xl font-black text-gray-900">@Model.AverageRating.ToString("0.0")</p>
+                        <div id="averageRatingStars" class="mt-1 flex items-center text-primary" data-rating="@Model.AverageRating.ToString("0.0")">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                var icon = i <= Math.Round(Model.AverageRating) ? "star" : "star_border";
+                                <span class="material-symbols-outlined text-lg">@icon</span>
+                            }
+                        </div>
+                        <p id="reviewCountValue" class="mt-2 text-sm text-gray-500">@Model.ReviewCount @(Model.ReviewCount == 1 ? "revisión" : "revisiones")</p>
+                    </div>
+                    <div id="ratingBreakdownContainer" class="flex-1 space-y-2">
+                        @foreach (var item in Model.RatingBreakdown.OrderByDescending(r => r.Stars))
+                        {
+                            <div class="flex items-center gap-4">
+                                <p class="w-2 text-sm font-medium text-gray-600">@item.Stars</p>
+                                <div class="h-2 flex-1 rounded-full bg-gray-200">
+                                    <div class="h-full rounded-full bg-primary" style="width: @item.Percentage%;"></div>
+                                </div>
+                                <p class="w-12 text-right text-sm text-gray-500">@($"{item.Percentage}%")</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 space-y-8">
+                <div id="reviewsList">
+                    @if (Model.Reviews.Any())
+                    {
+                        @foreach (var review in Model.Reviews)
+                        {
+                            <article class="flex flex-col gap-4 border-b border-gray-200 pb-8 last:border-b-0">
+                                <div class="flex items-center gap-3">
+                                    <div class="h-10 w-10 rounded-full bg-cover bg-center" style="background-image: url('@review.AvatarUrl');"></div>
+                                    <div>
+                                        <p class="font-medium text-gray-800">@review.ReviewerName</p>
+                                    <p class="text-sm text-gray-500">@FormatRelativeTime(review.TimeAgo ?? string.Empty)</p>
+                                    </div>
+                                </div>
+                                @Html.Raw(RenderStaticStars(review.Rating))
+                                <p class="text-gray-600">@review.Comment</p>
+                                <div class="flex items-center gap-6 text-sm text-gray-500">
+                                    <button type="button" class="flex items-center gap-1 hover:text-primary">
+                                        <span class="material-symbols-outlined text-lg">thumb_up</span>@review.UpVotes
+                                    </button>
+                                    <button type="button" class="flex items-center gap-1 hover:text-primary">
+                                        <span class="material-symbols-outlined text-lg">thumb_down</span>@review.DownVotes
+                                    </button>
+                                </div>
+                            </article>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-sm text-gray-500">Aún no hay revisiones registradas para este proyecto.</p>
+                    }
+                </div>
+            </div>
+        </section>
+
+        @if (Model.Metrics.Any())
+        {
+            <section>
+                <h2 class="text-xl font-bold text-gray-900">Rendimiento del Proyecto</h2>
+                <div id="metricsContainer" class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    @foreach (var metric in Model.Metrics)
+                    {
+                        <div class="rounded-lg border border-gray-200 bg-white p-6">
+                            <p class="text-base font-medium text-gray-600">@metric.Label</p>
+                            <p class="text-3xl font-bold text-gray-900">@metric.Value</p>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+
+        @if (Model.CanComment)
+        {
+            <section class="pb-12">
+                <h2 class="text-xl font-bold text-gray-900">Añadir un Comentario</h2>
+                <form id="addReviewForm" asp-action="AddReview" asp-controller="Description" method="post" class="mt-4 space-y-4" data-slug="@Model.Slug">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="Slug" value="@Model.Slug" />
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="Rating">Calificación</label>
+                        <div id="ratingStars" class="rating" role="radiogroup" aria-label="Selecciona una calificación">
+                            @for (var i = 5; i >= 1; i--)
+                            {
+                                <input class="rating__input" type="radio" id="rating-@i" name="RatingOption" value="@i" aria-label="@i estrellas" />
+                                <label class="rating__label" for="rating-@i"></label>
+                            }
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="comment">Comentario</label>
+                        <textarea name="Comment" id="comment" class="w-full rounded-lg border-gray-200 bg-white p-4 text-sm text-gray-700 focus:border-primary focus:ring-primary" placeholder="Comparta sus observaciones sobre este proyecto..." rows="5"></textarea>
+                    </div>
+                    <div id="reviewFormFeedback" class="hidden rounded-lg border px-4 py-3 text-sm"></div>
+                    <div class="mt-4 flex justify-end">
+                        <button id="submitReviewButton" class="flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" type="submit">
+                            <span class="material-symbols-outlined text-base">send</span>
+                            Enviar Comentario
+                        </button>
+                    </div>
+                </form>
+            </section>
+        }
+        else
+        {
+            <section class="pb-12">
+                <h2 class="text-xl font-bold text-gray-900">Añadir un Comentario</h2>
+                <div class="mt-4 rounded-lg border border-dashed border-gray-300 bg-white p-6 text-sm text-gray-600 text-center">
+                    <p>Debes iniciar sesión para calificar y dejar un comentario.</p>
+                    <button type="button" class="mt-3 inline-flex items-center gap-2 rounded-lg border border-primary px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 js-login-trigger">
+                        <span class="material-symbols-outlined text-base">login</span>
+                        Iniciar sesión
+                    </button>
+                </div>
+            </section>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (function () {
+            const escapeHtml = (value) => {
+                return (value ?? '').toString().replace(/[&<>"']/g, (char) => {
+                    switch (char) {
+                        case '&': return '&amp;';
+                        case '<': return '&lt;';
+                        case '>': return '&gt;';
+                        case '"': return '&quot;';
+                        case "'": return '&#39;';
+                        default: return char;
+                    }
+                });
+            };
+
+            const storageKey = 'recentProjects';
+            const maxItems = 8;
+            const project = @Html.Raw(JsonSerializer.Serialize(new
+            {
+                slug = Model.Slug,
+                title = Model.Title,
+                description = string.IsNullOrWhiteSpace(Model.Description) ? Model.Overview : Model.Description,
+                technology = Model.Technology,
+                imageUrl = string.IsNullOrWhiteSpace(Model.ImageUrl) ? "https://via.placeholder.com/400x300?text=Proyecto" : Model.ImageUrl,
+                rating = Model.AverageRating,
+                reviewCount = Model.ReviewCount,
+                authorUsername = Model.AuthorUsername,
+                authorDisplayName = string.IsNullOrWhiteSpace(Model.AuthorDisplayName) ? Model.AuthorUsername : Model.AuthorDisplayName
+            }));
+
+            try {
+                const serialized = window.localStorage.getItem(storageKey);
+                let items = [];
+                if (serialized) {
+                    const parsed = JSON.parse(serialized);
+                    if (Array.isArray(parsed)) {
+                        items = parsed;
+                    }
+                }
+                const filtered = items.filter(item => item && item.slug !== project.slug);
+                filtered.unshift({
+                    ...project,
+                    viewedAt: new Date().toISOString()
+                });
+
+                const trimmed = filtered.slice(0, maxItems);
+                window.localStorage.setItem(storageKey, JSON.stringify(trimmed));
+            } catch (err) {
+                console.warn('No se pudo actualizar la lista de proyectos recientes.', err);
+            }
+
+            const form = document.getElementById('addReviewForm');
+            if (!form) {
+                return;
+            }
+
+            const ratingOptions = Array.from(form.querySelectorAll('input[name="RatingOption"]'));
+            const feedback = document.getElementById('reviewFormFeedback');
+            const submitButton = document.getElementById('submitReviewButton');
+            const averageValue = document.getElementById('averageRatingValue');
+            const starsContainer = document.getElementById('averageRatingStars');
+            const reviewCountValue = document.getElementById('reviewCountValue');
+            const breakdownContainer = document.getElementById('ratingBreakdownContainer');
+            const metricsContainer = document.getElementById('metricsContainer');
+            const reviewsList = document.getElementById('reviewsList');
+            const commentField = form.querySelector('[name="Comment"]');
+
+            const toastElement = document.getElementById('reviewToast') ?? (() => {
+                const element = document.createElement('div');
+                element.id = 'reviewToast';
+                element.className = 'fixed top-6 right-6 hidden rounded-lg border px-4 py-3 text-sm shadow-lg z-50';
+                document.body.appendChild(element);
+                return element;
+            })();
+
+            const displayToast = (message, type) => {
+                if (!toastElement) {
+                    return;
+                }
+
+                const base = 'rounded-lg border px-4 py-3 text-sm shadow-lg';
+                toastElement.className = type === 'success'
+                    ? `${base} border-green-200 bg-green-50 text-green-700`
+                    : `${base} border-red-200 bg-red-50 text-red-700`;
+                toastElement.textContent = message;
+                toastElement.classList.remove('hidden');
+
+                window.setTimeout(() => {
+                    toastElement.classList.add('hidden');
+                }, 3500);
+            };
+
+            const formatTimeAgo = (value) => {
+                if (!value) {
+                    return 'Hace unos segundos';
+                }
+                const parsed = new Date(value);
+                if (Number.isNaN(parsed.getTime())) {
+                    return value;
+                }
+
+                const diffMs = Date.now() - parsed.getTime();
+                if (diffMs < 60000) {
+                    return 'Hace unos segundos';
+                }
+                const diffMinutes = Math.floor(diffMs / 60000);
+                if (diffMinutes < 60) {
+                    return `Hace ${diffMinutes} minuto${diffMinutes === 1 ? '' : 's'}`;
+                }
+                const diffHours = Math.floor(diffMinutes / 60);
+                if (diffHours < 24) {
+                    return `Hace ${diffHours} hora${diffHours === 1 ? '' : 's'}`;
+                }
+                const diffDays = Math.floor(diffHours / 24);
+                if (diffDays < 30) {
+                    return `Hace ${diffDays} día${diffDays === 1 ? '' : 's'}`;
+                }
+                const diffMonths = Math.floor(diffDays / 30);
+                if (diffMonths < 12) {
+                    return `Hace ${diffMonths} mes${diffMonths === 1 ? '' : 'es'}`;
+                }
+                const diffYears = Math.floor(diffDays / 365);
+                return `Hace ${diffYears} año${diffYears === 1 ? '' : 's'}`;
+            };
+
+            const getValue = (source, ...keys) => {
+                if (!source) {
+                    return undefined;
+                }
+                for (const key of keys) {
+                    if (source[key] !== undefined && source[key] !== null) {
+                        return source[key];
+                    }
+                }
+                return undefined;
+            };
+
+            const setFeedback = (message, type) => {
+                if (!feedback) {
+                    return;
+                }
+
+                if (!message) {
+                    feedback.className = 'hidden rounded-lg border px-4 py-3 text-sm';
+                    feedback.textContent = '';
+                    return;
+                }
+
+                const base = 'rounded-lg border px-4 py-3 text-sm';
+                const classes = type === 'success'
+                    ? `${base} border-green-200 bg-green-50 text-green-700`
+                    : `${base} border-red-200 bg-red-50 text-red-700`;
+                feedback.className = classes;
+                feedback.textContent = message;
+            };
+
+            let currentRating = null;
+
+            const setRating = (value) => {
+                const normalized = Number(value);
+                if (Number.isFinite(normalized) && normalized >= 1 && normalized <= 5) {
+                    currentRating = normalized;
+                } else {
+                    currentRating = null;
+                }
+
+                ratingOptions.forEach((option) => {
+                    option.checked = Number(option.value) === currentRating;
+                });
+            };
+
+            ratingOptions.forEach((option) => {
+                option.addEventListener('change', () => {
+                    setRating(option.value);
+                    setFeedback('', '');
+                });
+            });
+
+            setRating(null);
+
+            const toggleSubmitting = (isSubmitting) => {
+                if (!submitButton) {
+                    return;
+                }
+                submitButton.disabled = isSubmitting;
+                submitButton.classList.toggle('opacity-60', isSubmitting);
+            };
+
+            const formatStars = (rating) => {
+                const rounded = Math.round(Number(rating));
+                let html = '';
+                for (let i = 1; i <= 5; i += 1) {
+                    const icon = i <= rounded ? 'star' : 'star_border';
+                    html += `<span class="material-symbols-outlined text-lg">${icon}</span>`;
+                }
+                return html;
+            };
+
+            const renderRatingBreakdown = (items) => {
+                if (!breakdownContainer) {
+                    return;
+                }
+
+                if (!Array.isArray(items) || items.length === 0) {
+                    breakdownContainer.innerHTML = '<p class="text-sm text-gray-500">Sin datos disponibles.</p>';
+                    return;
+                }
+
+                breakdownContainer.innerHTML = items.map((item) => {
+                    const percentage = Number(item.percentage ?? item.Percentage ?? 0);
+                    const stars = item.stars ?? item.Stars ?? 0;
+                    return `
+                        <div class="flex items-center gap-4">
+                            <p class="w-2 text-sm font-medium text-gray-600">${stars}</p>
+                            <div class="h-2 flex-1 rounded-full bg-gray-200">
+                                <div class="h-full rounded-full bg-primary" style="width: ${percentage}%;"></div>
+                            </div>
+                            <p class="w-12 text-right text-sm text-gray-500">${percentage}%</p>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            const renderStaticStars = (rating) => {
+                const rounded = Math.round(Number(rating) || 0);
+                let html = '';
+                for (let i = 1; i <= 5; i += 1) {
+                    html += i <= rounded
+                        ? '<span class="text-base text-amber-400">★</span>'
+                        : '<span class="text-base text-gray-300">☆</span>';
+                }
+                return `<div class="flex items-center gap-1">${html}</div>`;
+            };
+
+            const renderMetrics = (metrics) => {
+                if (!metricsContainer) {
+                    return;
+                }
+
+                if (!Array.isArray(metrics) || metrics.length === 0) {
+                    metricsContainer.innerHTML = '<p class="text-sm text-gray-500">Sin métricas disponibles.</p>';
+                    return;
+                }
+
+                metricsContainer.innerHTML = metrics.map((metric) => {
+                    const label = escapeHtml((metric.label || metric.Label || '').toString());
+                    const value = escapeHtml((metric.value || metric.Value || '').toString());
+                    return `
+                        <div class="rounded-lg border border-gray-200 bg-white p-6">
+                            <p class="text-base font-medium text-gray-600">${label}</p>
+                            <p class="text-3xl font-bold text-gray-900">${value}</p>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            const renderReviews = (reviews) => {
+                if (!reviewsList) {
+                    return;
+                }
+
+                if (!Array.isArray(reviews) || reviews.length === 0) {
+                    reviewsList.innerHTML = '<p class="text-sm text-gray-500">Aún no hay revisiones registradas para este proyecto.</p>';
+                    return;
+                }
+
+                reviewsList.innerHTML = reviews.map((review) => {
+                    const safeComment = escapeHtml((review.comment || review.Comment || '').toString());
+                    const reviewer = review.reviewerName || review.ReviewerName || 'Usuario';
+                    const timeAgo = formatTimeAgo(review.timeAgo || review.TimeAgo || '');
+                    const avatar = review.avatarUrl || review.AvatarUrl || 'https://via.placeholder.com/64?text=R';
+                    const rating = review.rating ?? review.Rating ?? 0;
+
+                    return `
+                        <article class="flex flex-col gap-4 border-b border-gray-200 pb-8 last:border-b-0">
+                            <div class="flex items-center gap-3">
+                                <div class="h-10 w-10 rounded-full bg-cover bg-center" style="background-image: url('${avatar}');"></div>
+                                <div>
+                                    <p class="font-medium text-gray-800">${reviewer}</p>
+                                    <p class="text-sm text-gray-500">${timeAgo}</p>
+                                </div>
+                            </div>
+                            ${renderStaticStars(rating)}
+                            <p class="text-gray-600">${safeComment}</p>
+                        </article>
+                    `;
+                }).join('');
+            };
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const selectedOption = ratingOptions.find(option => option.checked);
+                if (selectedOption) {
+                    setRating(selectedOption.value);
+                }
+
+                const ratingValue = currentRating;
+                const commentValue = (commentField?.value || '').trim();
+
+                if (!Number.isFinite(ratingValue) || ratingValue < 1)
+                {
+                    const ratingError = 'Selecciona una calificación.';
+                    setFeedback(ratingError, 'error');
+                    displayToast(ratingError, 'error');
+                    return;
+                }
+
+                if (!commentValue)
+                {
+                    const commentError = 'Escribe un comentario para enviarlo.';
+                    setFeedback(commentError, 'error');
+                    displayToast(commentError, 'error');
+                    return;
+                }
+
+                const formData = new FormData(form);
+                formData.set('Rating', Number.isFinite(ratingValue) ? ratingValue.toString() : '');
+                formData.set('Comment', commentValue);
+
+                toggleSubmitting(true);
+                setFeedback('', '');
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        },
+                        credentials: 'same-origin',
+                        body: formData
+                    });
+
+                    const contentType = response.headers.get('content-type') || '';
+                    const payload = contentType.includes('application/json') ? await response.json() : null;
+
+                    if (!response.ok || !(payload && payload.success))
+                    {
+                        let message = payload?.message || 'No se pudo registrar su comentario.';
+                        if (payload?.errors) {
+                            const firstError = Object.values(payload.errors)
+                                .find(value => Array.isArray(value) && value.length > 0);
+                            if (firstError && typeof firstError[0] === 'string') {
+                                message = firstError[0];
+                            }
+                        }
+
+                        setFeedback(message, 'error');
+                        displayToast(message, 'error');
+                        return;
+                    }
+
+                    if (!payload) {
+                        const message = 'No se recibió una respuesta válida del servidor.';
+                        setFeedback(message, 'error');
+                        displayToast(message, 'error');
+                        return;
+                    }
+
+                    const average = getValue(payload, 'averageRating', 'AverageRating') ?? 0;
+                    const count = getValue(payload, 'reviewCount', 'ReviewCount') ?? 0;
+                    const breakdown = getValue(payload, 'ratingBreakdown', 'RatingBreakdown') ?? [];
+                    const reviews = getValue(payload, 'reviews', 'Reviews') ?? [];
+                    const metrics = getValue(payload, 'metrics', 'Metrics') ?? [];
+
+                    if (averageValue) {
+                        averageValue.textContent = Number(average).toFixed(1);
+                    }
+
+                    if (starsContainer) {
+                        starsContainer.innerHTML = formatStars(average);
+                    }
+
+                    if (reviewCountValue) {
+                        reviewCountValue.textContent = `${Number(count)} ${Number(count) === 1 ? 'revisión' : 'revisiones'}`;
+                    }
+
+                    renderRatingBreakdown(breakdown);
+                    renderMetrics(metrics);
+                    renderReviews(reviews);
+
+                    if (commentField) {
+                        commentField.value = '';
+                    }
+                    setRating(null);
+
+                    const successMessage = payload?.message || 'Comentario enviado.';
+                    setFeedback(successMessage, 'success');
+                    displayToast(successMessage, 'success');
+                } catch (err) {
+                    console.error(err);
+                    const errorMessage = 'Ocurrió un error inesperado. Inténtalo nuevamente.';
+                    setFeedback(errorMessage, 'error');
+                    displayToast(errorMessage, 'error');
+                } finally {
+                    toggleSubmitting(false);
+                }
+            });
+        })();
+    </script>
+}

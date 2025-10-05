@@ -1,0 +1,529 @@
+@using System.Collections.Generic
+@using System.Linq
+@model Tarea2.Models.ProjectCatalogViewModel
+
+@{
+    ViewData["Title"] ??= "Explora proyectos";
+    ViewData["UseFullWidthLayout"] = true;
+    ViewData["BodyClass"] = "font-display bg-white text-gray-800";
+}
+
+@{
+    var isAuthenticated = (ViewData["IsAuthenticated"] as bool?) ?? false;
+
+    var projectTypes = Model.AllProjects
+        .Select(p => string.IsNullOrWhiteSpace(p.TaskType) ? "General" : p.TaskType.Trim())
+        .Where(value => !string.IsNullOrWhiteSpace(value))
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .OrderBy(value => value, StringComparer.OrdinalIgnoreCase)
+        .ToList();
+
+    if (projectTypes.Count == 0)
+    {
+        projectTypes.Add("General");
+    }
+
+    var separators = new[] { ',', '/', '|', '·', '-', '+' };
+    var languageTokens = new List<string>();
+
+    foreach (var project in Model.AllProjects)
+    {
+        if (project.Languages is { Count: > 0 })
+        {
+            foreach (var language in project.Languages)
+            {
+                if (!string.IsNullOrWhiteSpace(language))
+                {
+                    languageTokens.Add(language.Trim());
+                }
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(project.Technology))
+        {
+            var parts = project.Technology.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
+            {
+                var trimmed = part.Trim();
+                if (!string.IsNullOrWhiteSpace(trimmed))
+                {
+                    languageTokens.Add(trimmed);
+                }
+            }
+        }
+    }
+
+    var popularLanguages = languageTokens
+        .GroupBy(token => token, StringComparer.OrdinalIgnoreCase)
+        .OrderByDescending(group => group.Count())
+        .ThenBy(group => group.Key, StringComparer.OrdinalIgnoreCase)
+        .Select(group => group.Key)
+        .Take(4)
+        .ToList();
+
+    if (popularLanguages.Count == 0)
+    {
+        popularLanguages = new List<string> { "JavaScript", "Python", "React", "Principiante" };
+    }
+
+    var totalProjects = Model.AllProjects.Count;
+}
+
+<section class="min-h-screen" data-page-home="true" data-authenticated="@(isAuthenticated ? "true" : "false")">
+    <div class="relative isolate">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-32">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
+                <div class="max-w-2xl">
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-black mb-3">
+                        @ViewData["Title"]
+                    </h1>
+                    @if (ViewData["FilteredUserDisplayName"] is string filteredName)
+                    {
+                        <p class="text-lg text-gray-600">
+                            Proyectos subidos por <span class="font-semibold">@filteredName</span>.
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-lg text-gray-600">
+                            Codemia es su campus colaborativo para cocrear, aprender y recibir retroalimentación de otros desarrolladores.
+                        </p>
+                    }
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-6">
+                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg aria-hidden="true" class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path clip-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" fill-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <input class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm" id="homeSearchInput" name="search" placeholder="Buscar proyectos por título, lenguaje, etc." type="search" autocomplete="off" />
+                    </div>
+                    <div class="relative">
+                        <select id="projectTypeFilter" class="block w-full md:w-64 pl-3 pr-10 py-2 border border-gray-300 rounded-lg leading-5 bg-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm text-gray-700">
+                            <option value="">Tipo de proyecto</option>
+                            @foreach (var type in projectTypes)
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="flex md:w-auto">
+                        <button id="homeFiltersReset" type="button" class="inline-flex items-center justify-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-600 transition-colors hover:border-primary hover:text-primary">
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-sm font-medium text-gray-700">Filtros populares:</span>
+                    @foreach (var language in popularLanguages)
+                    {
+                        <button type="button" class="px-3 py-1 text-sm rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors" data-filter-value="@language">@language</button>
+                    }
+                </div>
+            </div>
+
+            <div class="space-y-12">
+                <div>
+                    <h2 class="text-2xl font-bold text-black mb-4">Proyectos vistos recientemente</h2>
+                    @{
+                        var recentPlaceholderClasses = "rounded-xl border border-dashed border-gray-300 bg-white p-6 text-center text-sm text-gray-500";
+                        if (Model.RecentProjects.Count != 0)
+                        {
+                            recentPlaceholderClasses += " hidden";
+                        }
+                    }
+                    <div id="recentProjectsEmpty" class="@recentPlaceholderClasses">
+                        Aún no has visto proyectos recientemente.
+                    </div>
+                    <div id="recentProjectsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        @foreach (var project in Model.RecentProjects)
+                        {
+                            <div class="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+                                <div class="w-full h-40 bg-center bg-cover" style="background-image: url('@project.ImageUrl');"></div>
+                                <div class="p-4">
+                                    <h3 class="text-base font-bold text-gray-900 truncate group-hover:text-primary transition-colors">@project.Title</h3>
+                                    <p class="text-sm text-gray-600 mt-1">@project.Description</p>
+                                    <p class="mt-2 text-xs text-gray-500">
+                                        Autor:
+                                        <a class="font-semibold text-primary hover:underline" asp-action="Author" asp-route-username="@project.AuthorUsername">@project.AuthorDisplayName</a>
+                                    </p>
+                                    <div class="flex items-center justify-between mt-3">
+                                        <div class="flex items-center gap-1 text-yellow-500">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+                                            <span class="text-sm font-bold text-gray-700">@project.Rating.ToString("0.0")</span>
+                                        </div>
+                                        <span class="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">@project.Technology</span>
+                                    </div>
+                                    @if (project.ReviewCount > 0)
+                                    {
+                                        <p class="mt-2 text-xs text-gray-500">@project.ReviewCount @((project.ReviewCount == 1 ? "reseña" : "reseñas"))</p>
+                                    }
+                                </div>
+                                <a class="absolute inset-0" asp-route="project-detail" asp-route-slug="@project.Slug"></a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-bold text-black mb-4">Todos los proyectos</h2>
+                    <div id="allProjectsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        @foreach (var project in Model.AllProjects)
+                        {
+                            var taskType = string.IsNullOrWhiteSpace(project.TaskType) ? "General" : project.TaskType.Trim();
+                            var difficulty = string.IsNullOrWhiteSpace(project.Difficulty) ? "Sin nivel" : project.Difficulty.Trim();
+                            var languagesList = project.Languages?.Where(language => !string.IsNullOrWhiteSpace(language))
+                                .Select(language => language.Trim())
+                                .ToList() ?? new List<string>();
+                            var searchParts = new List<string>();
+
+                            if (!string.IsNullOrWhiteSpace(project.Title))
+                            {
+                                searchParts.Add(project.Title);
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(project.Description))
+                            {
+                                searchParts.Add(project.Description);
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(project.Technology))
+                            {
+                                searchParts.Add(project.Technology);
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(project.AuthorDisplayName))
+                            {
+                                searchParts.Add(project.AuthorDisplayName);
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(project.AuthorUsername))
+                            {
+                                searchParts.Add(project.AuthorUsername);
+                            }
+
+                            searchParts.Add(taskType);
+                            searchParts.Add(difficulty);
+                            searchParts.AddRange(languagesList);
+
+                            var searchValue = string.Join(" ", searchParts.Where(part => !string.IsNullOrWhiteSpace(part))).ToLowerInvariant();
+                            var technologyValue = (project.Technology ?? string.Empty).ToLowerInvariant();
+                            var taskTypeValue = taskType.ToLowerInvariant();
+                            var difficultyValue = difficulty.ToLowerInvariant();
+                            var languagesAttr = string.Join("|", languagesList.Select(language => language.ToLowerInvariant()));
+
+                            <div class="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300" data-project-card="true" data-search="@searchValue" data-task-type="@taskTypeValue" data-technology="@technologyValue" data-difficulty="@difficultyValue" data-languages="@languagesAttr">
+                                <div class="w-full h-40 bg-center bg-cover" style="background-image: url('@project.ImageUrl');"></div>
+                                <div class="p-4 space-y-3">
+                                    <h3 class="text-base font-bold text-gray-900 truncate group-hover:text-primary transition-colors">@project.Title</h3>
+                                    <p class="text-sm text-gray-600 mt-1">@project.Description</p>
+                                    <p class="mt-2 text-xs text-gray-500">
+                                        Autor:
+                                        <a class="font-semibold text-primary hover:underline" asp-action="Author" asp-route-username="@project.AuthorUsername">@project.AuthorDisplayName</a>
+                                    </p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-1 text-yellow-500">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+                                            <span class="text-sm font-bold text-gray-700">@project.Rating.ToString("0.0")</span>
+                                        </div>
+                                        <span class="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">@project.Technology</span>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                                        <span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 font-semibold text-gray-600">
+                                            @taskType
+                                        </span>
+                                        <span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 font-semibold text-gray-600">
+                                            @difficulty
+                                        </span>
+                                        @foreach (var language in languagesList.Take(2))
+                                        {
+                                            <span class="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2.5 py-1 font-semibold text-gray-600">
+                                                @language
+                                            </span>
+                                        }
+                                    </div>
+                                    @if (project.ReviewCount > 0)
+                                    {
+                                        <p class="mt-2 text-xs text-gray-500">@project.ReviewCount @((project.ReviewCount == 1 ? "reseña" : "reseñas"))</p>
+                                    }
+                                </div>
+                                <a class="absolute inset-0" asp-route="project-detail" asp-route-slug="@project.Slug"></a>
+                            </div>
+                        }
+                    </div>
+                    <div id="allProjectsEmpty" class="hidden rounded-lg border border-dashed border-gray-300 px-4 py-6 text-center text-sm text-gray-500">
+                        No se encontraron proyectos que coincidan con los filtros seleccionados.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (function () {
+            const FILTER_STORAGE_KEY = 'homeFilters';
+            const RECENT_PROJECTS_KEY = 'recentProjects';
+            const MAX_RECENT_DISPLAY = 4;
+            const DEFAULT_IMAGE = 'https://via.placeholder.com/400x300?text=Proyecto';
+
+            const homeRoot = document.querySelector('[data-page-home]');
+            const userIsAuthenticated = homeRoot?.dataset.authenticated === 'true';
+            const searchInput = document.getElementById('homeSearchInput');
+            const typeSelect = document.getElementById('projectTypeFilter');
+            const filterButtons = document.querySelectorAll('[data-filter-value]');
+            const resetButton = document.getElementById('homeFiltersReset');
+            const recentContainer = document.getElementById('recentProjectsContainer');
+            const recentPlaceholder = document.getElementById('recentProjectsEmpty');
+            const projectsGrid = document.getElementById('allProjectsGrid');
+            const projectCards = Array.from(projectsGrid?.querySelectorAll('[data-project-card]') ?? []);
+            const projectsEmptyState = document.getElementById('allProjectsEmpty');
+
+            const normalize = (value) => (value ?? '').toString().trim().toLowerCase();
+            const toList = (value) => (value ?? '')
+                .split('|')
+                .map(item => item.trim().toLowerCase())
+                .filter(Boolean);
+
+            const filterProjects = () => {
+                if (!projectCards.length) {
+                    if (projectsEmptyState) {
+                        projectsEmptyState.classList.add('hidden');
+                    }
+                    return;
+                }
+
+                const searchTerm = normalize(searchInput ? searchInput.value : '');
+                const typeTerm = normalize(typeSelect ? typeSelect.value : '');
+
+                projectCards.forEach((card) => {
+                    const cardSearch = card.dataset.search ?? '';
+                    const cardType = card.dataset.taskType ?? '';
+                    const cardTech = card.dataset.technology ?? '';
+                    const cardLanguages = toList(card.dataset.languages);
+                    const cardDifficulty = card.dataset.difficulty ?? '';
+
+                    const matchesSearch = !searchTerm || cardSearch.includes(searchTerm);
+                    const matchesType = !typeTerm
+                        || cardType === typeTerm
+                        || cardTech.includes(typeTerm)
+                        || cardDifficulty === typeTerm
+                        || cardLanguages.some(language => language === typeTerm);
+
+                    card.classList.toggle('hidden', !(matchesSearch && matchesType));
+                });
+
+                if (projectsEmptyState) {
+                    const hasVisible = projectCards.some(card => !card.classList.contains('hidden'));
+                    projectsEmptyState.classList.toggle('hidden', hasVisible);
+                }
+            };
+
+            const escapeHtml = (value) => {
+                return (value ?? '').toString().replace(/[&<>"']/g, (char) => {
+                    switch (char) {
+                        case '&': return '&amp;';
+                        case '<': return '&lt;';
+                        case '>': return '&gt;';
+                        case '"': return '&quot;';
+                        case "'": return '&#39;';
+                        default: return char;
+                    }
+                });
+            };
+
+            const safeNumber = (value, decimals = 1) => {
+                const number = Number(value);
+                return Number.isFinite(number) ? number.toFixed(decimals) : Number(0).toFixed(decimals);
+            };
+
+            const loadFilters = () => {
+                if (!window.localStorage) {
+                    return;
+                }
+
+                try {
+                    const raw = window.localStorage.getItem(FILTER_STORAGE_KEY);
+                    if (!raw) {
+                        return;
+                    }
+
+                    const stored = JSON.parse(raw);
+                    if (stored && typeof stored === 'object') {
+                        if (searchInput && typeof stored.search === 'string') {
+                            searchInput.value = stored.search;
+                        }
+                        if (typeSelect && typeof stored.projectType === 'string') {
+                            typeSelect.value = stored.projectType;
+                        }
+                    }
+                } catch (err) {
+                    console.warn('No se pudieron cargar los filtros guardados.', err);
+                }
+            };
+
+            const saveFilters = () => {
+                if (!window.localStorage) {
+                    return;
+                }
+
+                try {
+                    const payload = {
+                        search: searchInput ? searchInput.value : '',
+                        projectType: typeSelect ? typeSelect.value : ''
+                    };
+                    window.localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(payload));
+                } catch (err) {
+                    console.warn('No se pudieron guardar los filtros seleccionados.', err);
+                }
+            };
+
+            const handleFiltersChanged = () => {
+                filterProjects();
+                saveFilters();
+            };
+
+            const applyFilterValue = (value) => {
+                if (searchInput) {
+                    searchInput.value = value;
+                }
+                handleFiltersChanged();
+            };
+
+            const renderRecentProjects = () => {
+                if (!recentContainer || !window.localStorage) {
+                    return;
+                }
+
+                try {
+                    const hasServerCards = recentContainer.childElementCount > 0;
+                    const raw = window.localStorage.getItem(RECENT_PROJECTS_KEY);
+
+                    if (!raw) {
+                        if (!hasServerCards && recentPlaceholder) {
+                            recentPlaceholder.classList.remove('hidden');
+                        }
+                        return;
+                    }
+
+                    const stored = JSON.parse(raw);
+                    if (!Array.isArray(stored) || stored.length === 0) {
+                        if (!hasServerCards && recentPlaceholder) {
+                            recentPlaceholder.classList.remove('hidden');
+                        }
+                        return;
+                    }
+
+                    const items = stored
+                        .filter(item => item && typeof item.slug === 'string')
+                        .slice(0, MAX_RECENT_DISPLAY);
+
+                    if (items.length === 0) {
+                        if (!hasServerCards && recentPlaceholder) {
+                            recentPlaceholder.classList.remove('hidden');
+                        }
+                        return;
+                    }
+
+                    if (recentPlaceholder) {
+                        recentPlaceholder.classList.add('hidden');
+                    }
+
+                    const cards = items.map((project) => {
+                        const title = escapeHtml(project.title || 'Proyecto sin título');
+                        const description = escapeHtml((project.description || '').toString().slice(0, 140));
+                        const technology = escapeHtml(project.technology || 'General');
+                        const author = escapeHtml(project.authorDisplayName || project.authorUsername || 'Autor desconocido');
+                        const reviews = Number(project.reviewCount);
+                        const reviewText = reviews > 0
+                            ? `<p class="mt-2 text-xs text-gray-500">${reviews} ${reviews === 1 ? 'reseña' : 'reseñas'}</p>`
+                            : '';
+                        const imageUrl = encodeURI((project.imageUrl || '').trim() || DEFAULT_IMAGE);
+                        const rating = escapeHtml(safeNumber(project.rating));
+                        const detailUrl = `/proyectos/${encodeURIComponent(project.slug)}`;
+
+                        return `
+                            <div class="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+                                <div class="w-full h-40 bg-center bg-cover" style="background-image: url('${imageUrl}');"></div>
+                                <div class="p-4">
+                                    <h3 class="text-base font-bold text-gray-900 truncate group-hover:text-primary transition-colors">${title}</h3>
+                                    <p class="text-sm text-gray-600 mt-1">${description}</p>
+                                    <p class="mt-2 text-xs text-gray-500">
+                                        Autor:
+                                        <span class="font-semibold text-primary">${author}</span>
+                                    </p>
+                                    <div class="flex items-center justify-between mt-3">
+                                        <div class="flex items-center gap-1 text-yellow-500">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>
+                                            <span class="text-sm font-bold text-gray-700">${rating}</span>
+                                        </div>
+                                        <span class="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">${technology}</span>
+                                    </div>
+                                    ${reviewText}
+                                </div>
+                                <a class="absolute inset-0" href="${detailUrl}"></a>
+                            </div>
+                        `;
+                    }).join('');
+
+                    recentContainer.innerHTML = cards;
+                } catch (err) {
+                    console.warn('No se pudieron renderizar los proyectos recientes.', err);
+                    if (recentPlaceholder && recentContainer.childElementCount === 0) {
+                        recentPlaceholder.classList.remove('hidden');
+                    }
+                }
+            };
+
+            document.addEventListener('DOMContentLoaded', () => {
+                loadFilters();
+
+                if (searchInput) {
+                    searchInput.addEventListener('input', handleFiltersChanged);
+                    searchInput.addEventListener('change', handleFiltersChanged);
+                }
+
+                if (typeSelect) {
+                    typeSelect.addEventListener('change', handleFiltersChanged);
+                }
+
+                if (resetButton) {
+                    resetButton.addEventListener('click', () => {
+                        if (searchInput) {
+                            searchInput.value = '';
+                        }
+                        if (typeSelect) {
+                            typeSelect.value = '';
+                        }
+                        handleFiltersChanged();
+                    });
+                }
+
+                filterButtons.forEach((button) => {
+                    button.addEventListener('click', () => {
+                        const value = button.getAttribute('data-filter-value') || '';
+                        applyFilterValue(value);
+                    });
+                });
+
+                if (!userIsAuthenticated) {
+                    if (recentContainer) {
+                        recentContainer.innerHTML = '';
+                    }
+                    if (recentPlaceholder) {
+                        recentPlaceholder.classList.remove('hidden');
+                    }
+                } else {
+                    renderRecentProjects();
+                }
+
+                filterProjects();
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,453 @@
+@using System.Linq
+@model Tarea2.Models.MyProjectsViewModel
+
+@section HeadContent {
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+}
+
+@{
+    var authorName = string.IsNullOrWhiteSpace(Model.AuthorDisplayName) ? "Usuario" : Model.AuthorDisplayName;
+}
+
+<section class="w-full px-4 md:px-10 pt-8 pb-24 bg-background-light">
+    <div class="max-w-6xl mx-auto">
+        @if (TempData["StatusMessage"] is string status && !string.IsNullOrWhiteSpace(status))
+        {
+            <div class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">@status</div>
+        }
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <div>
+                <h2 class="text-3xl font-bold text-zinc-900">Mis Proyectos</h2>
+                <p class="text-zinc-500 mt-1">Hola, @authorName. Aquí puede ver sus proyectos y su progreso.</p>
+            </div>
+            <a asp-action="Upload" class="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/80 transition-colors">
+                <span class="material-symbols-outlined">upload</span>
+                <span class="truncate">Subir Proyecto</span>
+            </a>
+        </div>
+
+        <section class="mb-8">
+            <h3 class="text-xl font-bold text-zinc-900 mb-4">Estadísticas de Rendimiento</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="flex flex-col gap-2 rounded-xl p-6 border border-zinc-200 bg-white">
+                    <p class="text-sm font-medium text-zinc-500">Promedio de Calificaciones</p>
+                    <p class="text-3xl font-bold text-zinc-900">@Model.Stats.AverageRating.ToString("0.0")</p>
+                    <p class="text-xs text-zinc-500">Basado en @Model.Stats.RatedProjectCount @((Model.Stats.RatedProjectCount == 1 ? "proyecto" : "proyectos")) con reseñas.</p>
+                </div>
+                <div class="flex flex-col gap-2 rounded-xl p-6 border border-zinc-200 bg-white">
+                    <p class="text-sm font-medium text-zinc-500">Proyectos Subidos</p>
+                    <p class="text-3xl font-bold text-zinc-900">@Model.Stats.ProjectCount</p>
+                    @if (Model.Stats.UnratedProjectCount > 0)
+                    {
+                        <p class="text-xs text-zinc-500">@Model.Stats.UnratedProjectCount @((Model.Stats.UnratedProjectCount == 1 ? "proyecto" : "proyectos")) sin reseñas.</p>
+                    }
+                </div>
+                <div class="flex flex-col gap-2 rounded-xl p-6 border border-zinc-200 bg-white">
+                    <p class="text-sm font-medium text-zinc-500">Comentarios Recibidos</p>
+                    <p class="text-3xl font-bold text-zinc-900">@Model.Stats.TotalReviews</p>
+                    @if (Model.Stats.ProjectCount > 0)
+                    {
+                        <p class="text-xs text-zinc-500">Promedio de @Model.Stats.AverageReviewsPerProject.ToString("0.0") reseñas por proyecto.</p>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 class="text-xl font-bold text-zinc-900 mb-4">Todos sus proyectos</h3>
+            @if (Model.AllProjects.Count == 0)
+            {
+                <div class="rounded-lg border border-dashed border-zinc-300 bg-white px-6 py-10 text-center text-sm text-zinc-500">
+                    Todavía no has registrado proyectos.
+                </div>
+            }
+            else
+            {
+                <div class="mb-5 rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
+                    <div class="grid gap-3 md:grid-cols-4">
+                        <div>
+                            <label for="myProjectsTaskFilter" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-zinc-500">Tipo de tarea</label>
+                            <select id="myProjectsTaskFilter" class="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                                <option value="">Todas</option>
+                                @foreach (var task in Model.Filters.TaskTypes)
+                                {
+                                    <option value="@task">@task</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <label for="myProjectsLanguageFilter" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-zinc-500">Lenguaje</label>
+                            <select id="myProjectsLanguageFilter" class="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                                <option value="">Todos</option>
+                                @foreach (var language in Model.Filters.Languages)
+                                {
+                                    <option value="@language">@language</option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <label for="myProjectsDifficultyFilter" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-zinc-500">Dificultad</label>
+                            <select id="myProjectsDifficultyFilter" class="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                                <option value="">Todas</option>
+                                @foreach (var difficulty in Model.Filters.Difficulties)
+                                {
+                                    <option value="@difficulty">@difficulty</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="flex items-end justify-start md:justify-end">
+                            <button id="myProjectsResetFilters" type="button" class="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-4 py-2 text-sm font-semibold text-zinc-600 transition-colors hover:border-primary hover:bg-primary/5 hover:text-primary">
+                                <span class="material-symbols-outlined text-base">restart_alt</span>
+                                Limpiar filtros
+                            </button>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-xs text-zinc-500">Los filtros se aplican de forma inmediata para ayudarte a encontrar el proyecto ideal que quieres revisar.</p>
+                </div>
+
+                <div id="myProjectsContainer" class="space-y-4">
+                    @foreach (var section in Model.ProjectsWithReviews)
+                    {
+                        var project = section.Project;
+                        var languages = section.Languages;
+                        var languageAttr = string.Join("|", languages.Select(l => l.ToLowerInvariant()));
+                        var taskAttr = (project.TaskType ?? string.Empty).ToLowerInvariant();
+                        var difficultyAttr = (project.Difficulty ?? string.Empty).ToLowerInvariant();
+                        var displayLanguages = languages.Any() ? string.Join(", ", languages) : project.Technology;
+
+                        <details class="group rounded-2xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md" data-project-card="true" data-task-type="@taskAttr" data-language="@languageAttr" data-difficulty="@difficultyAttr" data-slug="@project.Slug">
+                            <summary class="flex cursor-pointer list-none flex-col gap-4 rounded-2xl px-5 py-4 transition-colors group-open:bg-primary/5 md:flex-row md:items-start md:justify-between">
+                                <div class="space-y-2">
+                                    <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-primary/80">
+                                        @if (!string.IsNullOrWhiteSpace(project.TaskType))
+                                        {
+                                            <span class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-primary">@project.TaskType</span>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(project.Difficulty))
+                                        {
+                                            <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-amber-600">@project.Difficulty</span>
+                                        }
+                                    </div>
+                                    <h4 class="text-lg font-semibold text-zinc-900">@project.Title</h4>
+                                    <p class="max-w-2xl text-sm text-zinc-600">@project.Description</p>
+                                    <div class="flex flex-wrap items-center gap-2 text-xs text-zinc-500">
+                                        <span class="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2.5 py-1 font-medium text-zinc-600">
+                                            <span class="material-symbols-outlined text-sm">code</span>
+                                            @displayLanguages
+                                        </span>
+                                        <span class="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2.5 py-1 font-medium text-zinc-600">
+                                            <span class="material-symbols-outlined text-sm">person</span>
+                                            @project.AuthorDisplayName
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col gap-3 text-right">
+                                    <div class="flex items-center justify-end gap-2 text-sm">
+                                        <div class="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 font-semibold text-primary">
+                                            <span class="material-symbols-outlined text-base">star</span>
+                                            @project.Rating.ToString("0.0")
+                                        </div>
+                                        <span class="text-xs text-zinc-500">@project.ReviewCount @((project.ReviewCount == 1) ? "comentario" : "comentarios")</span>
+                                    </div>
+                                    <div class="flex items-center justify-end gap-2 text-xs text-zinc-500">
+                                        <span class="inline-flex items-center gap-1 rounded-md bg-zinc-100 px-2 py-1 font-semibold text-zinc-600">
+                                            <span class="material-symbols-outlined text-sm">bookmark</span>
+                                            @project.Technology
+                                        </span>
+                                    </div>
+                                </div>
+                            </summary>
+
+                            <div class="border-t border-zinc-200 px-5 py-5">
+                                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        <a asp-action="Edit" asp-route-slug="@project.Slug" class="inline-flex items-center gap-1 rounded-md border border-primary px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/10">
+                                            <span class="material-symbols-outlined text-base">edit</span>
+                                            Editar proyecto
+                                        </a>
+                                        <form asp-action="Delete" method="post" class="inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="slug" value="@project.Slug" />
+                                            <button type="submit" class="inline-flex items-center gap-1 rounded-md border border-red-500 px-3 py-1.5 text-xs font-semibold text-red-600 transition-colors hover:bg-red-50" onclick="return confirm('¿Seguro que deseas eliminar este proyecto? Esta acción no se puede deshacer.');">
+                                                <span class="material-symbols-outlined text-base">delete</span>
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2" data-sort-group="@project.Slug">
+                                        <span class="text-xs font-semibold uppercase tracking-wide text-zinc-500">Ordenar comentarios:</span>
+                                        <button type="button" class="comment-sort-button inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-xs font-semibold transition-colors" data-sort-button data-project="@project.Slug" data-sort="relevance" data-state="active" aria-pressed="true">
+                                            <span class="material-symbols-outlined text-base">trending_up</span>
+                                            Relevancia
+                                        </button>
+                                        <button type="button" class="comment-sort-button inline-flex items-center gap-1 rounded-md border px-3 py-1.5 text-xs font-semibold transition-colors" data-sort-button data-project="@project.Slug" data-sort="date" data-state="inactive" aria-pressed="false">
+                                            <span class="material-symbols-outlined text-base">schedule</span>
+                                            Más recientes
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="mt-5 space-y-4" data-comment-list="@project.Slug">
+                                    @if (section.Reviews.Count == 0)
+                                    {
+                                        <div class="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 px-4 py-6 text-center text-sm text-zinc-500">
+                                            Aún no ha recibido comentarios en este proyecto. Compártalo con sus compañeros para recibir retroalimentación.
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var review in section.Reviews)
+                                        {
+                                            var createdAt = review.CreatedAt?.ToString("O") ?? string.Empty;
+                                            var helpfulScore = review.HelpfulScore;
+                                            <article class="rounded-xl border border-zinc-200 bg-white px-4 py-4 shadow-sm" data-comment-item data-helpful="@helpfulScore" data-created-at="@createdAt">
+                                                <div class="flex items-start gap-3">
+                                                    <div class="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-zinc-100">
+                                                        <img src="@review.AvatarUrl" alt="Avatar de @review.ReviewerName" class="h-full w-full object-cover" loading="lazy" />
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <div class="flex flex-wrap items-center gap-2">
+                                                            <p class="text-sm font-semibold text-zinc-800">@review.ReviewerName</p>
+                                                            <span class="text-xs text-zinc-400">@review.TimeAgo</span>
+                                                        </div>
+                                                        <div class="mt-2 flex items-center gap-2 text-amber-500">
+                                                            <span class="material-symbols-outlined text-base">grade</span>
+                                                            <span class="text-sm font-semibold text-zinc-700">@review.Rating.ToString("0.0")</span>
+                                                        </div>
+                                                        <p class="mt-3 text-sm text-zinc-600">@review.Comment</p>
+                                                        <div class="mt-3 text-xs text-zinc-500">
+                                                            Relevancia percibida: <span class="font-semibold text-zinc-700">@helpfulScore</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </details>
+                    }
+                </div>
+
+                <div id="myProjectsEmptyState" class="hidden rounded-lg border border-dashed border-zinc-300 bg-white px-6 py-10 text-center text-sm text-zinc-500">
+                    No se encontraron proyectos con los filtros seleccionados.
+                </div>
+            }
+        </section>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (function () {
+            const FILTER_STORAGE_KEY = 'myProjectsFilters';
+            const filters = {
+                task: document.getElementById('myProjectsTaskFilter'),
+                language: document.getElementById('myProjectsLanguageFilter'),
+                difficulty: document.getElementById('myProjectsDifficultyFilter'),
+                reset: document.getElementById('myProjectsResetFilters'),
+                container: document.getElementById('myProjectsContainer'),
+                emptyState: document.getElementById('myProjectsEmptyState')
+            };
+
+            const projectCards = Array.from(filters.container?.querySelectorAll('[data-project-card]') ?? []);
+
+            const toKey = (value) => (value ?? '').toString().trim().toLowerCase();
+
+            const loadStoredFilters = () => {
+                try {
+                    const raw = window.localStorage.getItem(FILTER_STORAGE_KEY);
+                    if (!raw) {
+                        return;
+                    }
+                    const stored = JSON.parse(raw);
+                    if (stored && typeof stored === 'object') {
+                        if (filters.task && typeof stored.task === 'string') {
+                            filters.task.value = stored.task;
+                        }
+                        if (filters.language && typeof stored.language === 'string') {
+                            filters.language.value = stored.language;
+                        }
+                        if (filters.difficulty && typeof stored.difficulty === 'string') {
+                            filters.difficulty.value = stored.difficulty;
+                        }
+                    }
+                } catch (err) {
+                    console.warn('No se pudieron cargar los filtros guardados de Mis Proyectos.', err);
+                }
+            };
+
+            const matchesFilter = (card, attribute, valueKey) => {
+                if (!valueKey) {
+                    return true;
+                }
+
+                const raw = (card.getAttribute(attribute) ?? '')
+                    .split('|')
+                    .map(toKey)
+                    .filter(Boolean);
+
+                if (raw.length === 0) {
+                    return false;
+                }
+
+                return raw.some(entry => entry === valueKey);
+            };
+
+            const toggleEmptyState = () => {
+                if (!filters.emptyState) {
+                    return;
+                }
+
+                const hasVisible = projectCards.some(card => !card.classList.contains('hidden'));
+                filters.emptyState.classList.toggle('hidden', hasVisible);
+            };
+
+            const storeFilters = () => {
+                try {
+                    const payload = {
+                        task: filters.task ? filters.task.value : '',
+                        language: filters.language ? filters.language.value : '',
+                        difficulty: filters.difficulty ? filters.difficulty.value : ''
+                    };
+                    window.localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(payload));
+                } catch (err) {
+                    console.warn('No se pudieron guardar los filtros de Mis Proyectos.', err);
+                }
+            };
+
+            const applyFilters = (options = { persist: true }) => {
+                const task = toKey(filters.task?.value);
+                const language = toKey(filters.language?.value);
+                const difficulty = toKey(filters.difficulty?.value);
+
+                projectCards.forEach(card => {
+                    const isMatch = matchesFilter(card, 'data-task-type', task)
+                        && matchesFilter(card, 'data-languages', language)
+                        && matchesFilter(card, 'data-difficulty', difficulty);
+
+                    card.classList.toggle('hidden', !isMatch);
+                });
+
+                toggleEmptyState();
+
+                if (options.persist) {
+                    storeFilters();
+                }
+            };
+
+            [filters.task, filters.language, filters.difficulty].forEach(control => {
+                if (!control) {
+                    return;
+                }
+
+                control.addEventListener('change', applyFilters);
+            });
+
+            if (filters.reset) {
+                filters.reset.addEventListener('click', () => {
+                    [filters.task, filters.language, filters.difficulty].forEach(control => {
+                        if (control) {
+                            control.value = '';
+                        }
+                    });
+
+                    applyFilters();
+                });
+            }
+
+            loadStoredFilters();
+            applyFilters({ persist: false });
+
+            window.addEventListener('beforeunload', () => {
+                storeFilters();
+            });
+
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted) {
+                    loadStoredFilters();
+                    applyFilters({ persist: false });
+                }
+            });
+
+            const ACTIVE_CLASSES = ['border-primary', 'bg-primary', 'text-white', 'hover:bg-primary/90'];
+            const INACTIVE_CLASSES = ['border-zinc-200', 'text-zinc-600', 'hover:border-primary', 'hover:bg-primary/10', 'hover:text-primary'];
+
+            const applySortButtonState = (button, isActive) => {
+                if (!button) {
+                    return;
+                }
+
+                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                button.dataset.state = isActive ? 'active' : 'inactive';
+
+                button.classList.remove(...ACTIVE_CLASSES, ...INACTIVE_CLASSES);
+
+                if (isActive) {
+                    button.classList.add(...ACTIVE_CLASSES);
+                } else {
+                    button.classList.add(...INACTIVE_CLASSES);
+                }
+            };
+
+            const parseScore = (value) => Number(value ?? 0);
+            const parseDate = (value) => {
+                if (!value) {
+                    return 0;
+                }
+
+                const timestamp = Date.parse(value);
+                return Number.isNaN(timestamp) ? 0 : timestamp;
+            };
+
+            const sortButtons = Array.from(document.querySelectorAll('[data-sort-button]'));
+
+            sortButtons.forEach(button => {
+                applySortButtonState(button, button.dataset.state === 'active');
+
+                button.addEventListener('click', () => {
+                    const projectSlug = button.dataset.project;
+                    const sortMode = button.dataset.sort;
+                    const commentList = document.querySelector(`[data-comment-list="${projectSlug}"]`);
+                    if (!commentList) {
+                        return;
+                    }
+
+                    const items = Array.from(commentList.querySelectorAll('[data-comment-item]'));
+                    if (items.length === 0) {
+                        return;
+                    }
+
+                    items.sort((a, b) => {
+                        if (sortMode === 'date') {
+                            const dateDiff = parseDate(b.dataset.createdAt) - parseDate(a.dataset.createdAt);
+                            if (dateDiff !== 0) {
+                                return dateDiff;
+                            }
+
+                            return parseScore(b.dataset.helpful) - parseScore(a.dataset.helpful);
+                        }
+
+                        const relevanceDiff = parseScore(b.dataset.helpful) - parseScore(a.dataset.helpful);
+                        if (relevanceDiff !== 0) {
+                            return relevanceDiff;
+                        }
+
+                        return parseDate(b.dataset.createdAt) - parseDate(a.dataset.createdAt);
+                    });
+
+                    const fragment = document.createDocumentFragment();
+                    items.forEach(item => fragment.appendChild(item));
+                    commentList.appendChild(fragment);
+
+                    const group = button.closest('[data-sort-group]');
+                    if (group) {
+                        group.querySelectorAll('[data-sort-button]').forEach(btn => applySortButtonState(btn, btn === button));
+                    } else {
+                        applySortButtonState(button, true);
+                    }
+                });
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,54 @@
+@model Tarea2.Models.SignUpViewModel
+
+@{
+    ViewData["Title"] = "Crear cuenta";
+}
+
+<section class="max-w-lg mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+    <h1 class="text-3xl font-bold text-black mb-6">Crear cuenta</h1>
+
+    <form asp-action="SignUp" method="post" class="space-y-6">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-sm text-red-600"></div>
+
+        <div>
+            <label asp-for="Username" class="block text-sm font-medium text-gray-700 mb-1"></label>
+            <input asp-for="Username" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+            <span asp-validation-for="Username" class="text-xs text-red-600"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password" class="block text-sm font-medium text-gray-700 mb-1"></label>
+            <input asp-for="Password" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+            <span asp-validation-for="Password" class="text-xs text-red-600"></span>
+        </div>
+
+        <div>
+            <label asp-for="FirstName" class="block text-sm font-medium text-gray-700 mb-1"></label>
+            <input asp-for="FirstName" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+            <span asp-validation-for="FirstName" class="text-xs text-red-600"></span>
+        </div>
+
+        <div>
+            <label asp-for="LastName" class="block text-sm font-medium text-gray-700 mb-1"></label>
+            <input asp-for="LastName" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+            <span asp-validation-for="LastName" class="text-xs text-red-600"></span>
+        </div>
+
+        <div>
+            <label asp-for="Email" class="block text-sm font-medium text-gray-700 mb-1"></label>
+            <input asp-for="Email" class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+            <span asp-validation-for="Email" class="text-xs text-red-600"></span>
+        </div>
+
+        <div class="flex justify-end">
+            <button type="submit" class="rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary/90">
+                Registrarme
+            </button>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

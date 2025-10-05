@@ -1,0 +1,345 @@
+@model Tarea2.Models.ProjectSubmissionViewModel
+
+@{
+    var currentUsername = ViewData["CurrentUsername"] as string ?? string.Empty;
+    var draftStorageKey = string.IsNullOrWhiteSpace(currentUsername)
+        ? "uploadFormDraft_anon"
+        : $"uploadFormDraft_{currentUsername}";
+}
+
+@section HeadContent {
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+}
+
+<section class="flex flex-col min-h-screen bg-background-light text-gray-800">
+    <div class="container mx-auto px-6 py-8 max-w-3xl">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900">Subir Proyecto Académico</h2>
+            <p class="mt-2 text-gray-600">Complete los detalles a continuación para subir su proyecto y recibir feedback.</p>
+        </div>
+        <div id="uploadFeedback" class="hidden rounded-lg border px-4 py-3 text-sm"></div>
+        <form id="uploadForm" class="space-y-6" method="post" enctype="multipart/form-data" data-submit-url="@Url.Action("Upload", "Projects")" data-draft-key="@draftStorageKey">
+            @Html.AntiForgeryToken()
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="Title">@Html.DisplayNameFor(m => m.Title)</label>
+                <input asp-for="Title" class="form-input w-full rounded-lg border-gray-300 bg-background-light focus:ring-primary focus:border-primary" placeholder="Ej: Aplicación Web para Críticas" />
+                <p class="mt-1 text-sm text-red-600 hidden" data-error-for="Title"></p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="Description">@Html.DisplayNameFor(m => m.Description)</label>
+                <textarea asp-for="Description" class="form-textarea w-full rounded-lg border-gray-300 bg-background-light focus:ring-primary focus:border-primary" placeholder="Describa brevemente su proyecto..." rows="4"></textarea>
+                <p class="mt-1 text-sm text-red-600 hidden" data-error-for="Description"></p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="Languages">@Html.DisplayNameFor(m => m.Languages)</label>
+                <input asp-for="Languages" class="form-input w-full rounded-lg border-gray-300 bg-background-light focus:ring-primary focus:border-primary" placeholder="Ej: JavaScript, Python, HTML" />
+                <p class="mt-1 text-sm text-red-600 hidden" data-error-for="Languages"></p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="RepositoryUrl">@Html.DisplayNameFor(m => m.RepositoryUrl)</label>
+                <input asp-for="RepositoryUrl" class="form-input w-full rounded-lg border-gray-300 bg-background-light focus:ring-primary focus:border-primary" placeholder="https://github.com/usuario/proyecto" />
+                <p class="mt-1 text-sm text-red-600 hidden" data-error-for="RepositoryUrl"></p>
+            </div>
+            <div class="relative flex items-center">
+                <div class="flex-grow border-t border-gray-300"></div>
+                <span class="flex-shrink mx-4 text-gray-500 text-sm">o</span>
+                <div class="flex-grow border-t border-gray-300"></div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Subir archivo adjunto</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-primary/5">
+                    <div class="space-y-1 text-center">
+                        <svg aria-hidden="true" class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 48 48">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                        </svg>
+                        <div class="flex text-sm text-gray-600 justify-center">
+                            <label class="relative cursor-pointer rounded font-medium text-primary hover:text-primary/80 focus-within:outline-none focus-within:ring-2 focus-within:ring-primary" for="Attachments">
+                                <span>Suba sus archivos</span>
+                                <input class="sr-only" id="Attachments" multiple name="Attachments" type="file" />
+                            </label>
+                            <p class="pl-1">o arrastra y suelta</p>
+                        </div>
+                        <p class="text-xs text-gray-500">Código fuente, documentación, etc. (máx. 50MB)</p>
+                    </div>
+                </div>
+                <p class="mt-1 text-sm text-red-600 hidden" data-error-for="Attachments"></p>
+                <p class="mt-1 text-sm text-red-600 hidden" data-error-for="RepositoryOrAttachment"></p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="Category">@Html.DisplayNameFor(m => m.Category)</label>
+                <select asp-for="Category" class="form-select w-full rounded-lg border-gray-300 bg-background-light focus:ring-primary focus:border-primary">
+                    <option value="">Selecciona un tipo</option>
+                    <option>Diseño UI</option>
+                    <option>Aplicaciones Web</option>
+                    <option>Inteligencia Artificial</option>
+                    <option>Investigación UX</option>
+                    <option>Backend</option>
+                    <option>Algoritmos</option>
+                    <option>Simulación</option>
+                    <option>Otro</option>
+                </select>
+                <p class="mt-1 text-sm text-red-600 hidden" data-error-for="Category"></p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="Difficulty">@Html.DisplayNameFor(m => m.Difficulty)</label>
+                <select asp-for="Difficulty" class="form-select w-full rounded-lg border-gray-300 bg-background-light focus:ring-primary focus:border-primary">
+                    <option value="">Selecciona el nivel</option>
+                    <option>Principiante</option>
+                    <option>Intermedio</option>
+                    <option>Avanzado</option>
+                </select>
+                <p class="mt-1 text-sm text-red-600 hidden" data-error-for="Difficulty"></p>
+            </div>
+            <div class="flex justify-end pt-4 pb-16">
+                <button id="submitButton" class="bg-primary text-white font-bold py-2 px-6 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" type="submit">
+                    Guardar Proyecto
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (function ($) {
+            'use strict';
+
+            const $form = $('#uploadForm');
+            const $feedback = $('#uploadFeedback');
+            const $submitButton = $('#submitButton');
+            const storageKey = $form.data('draft-key') || 'uploadFormDraft';
+            const maxTotalSize = 50 * 1024 * 1024;
+
+            const requiredFields = [
+                { name: 'Title', message: 'El título es obligatorio.' },
+                { name: 'Description', message: 'La descripción es obligatoria.' },
+                { name: 'Languages', message: 'Indica los lenguajes utilizados.' },
+                { name: 'Category', message: 'Selecciona un tipo.' },
+                { name: 'Difficulty', message: 'Selecciona el nivel de dificultad.' }
+            ];
+
+            const draftFields = ['Title', 'Description', 'Languages', 'RepositoryUrl', 'Category', 'Difficulty'];
+
+            function canUseStorage() {
+                try {
+                    const testKey = '__uploadDraftCheck__';
+                    window.localStorage.setItem(testKey, 'ok');
+                    window.localStorage.removeItem(testKey);
+                    return true;
+                } catch (err) {
+                    return false;
+                }
+            }
+
+            const storageAvailable = canUseStorage();
+
+            function saveDraft() {
+                if (!storageAvailable) {
+                    return;
+                }
+
+                const draft = {};
+                draftFields.forEach(function (field) {
+                    const value = ($form.find('[name="' + field + '"]').val() || '').toString();
+                    draft[field] = value;
+                });
+
+                try {
+                    window.localStorage.setItem(storageKey, JSON.stringify(draft));
+                } catch (err) {
+                    // ignore quota errors silently
+                }
+            }
+
+            function loadDraft() {
+                if (!storageAvailable) {
+                    return;
+                }
+
+                const raw = window.localStorage.getItem(storageKey);
+                if (!raw) {
+                    return;
+                }
+
+                try {
+                    const draft = JSON.parse(raw);
+                    draftFields.forEach(function (field) {
+                        if (Object.prototype.hasOwnProperty.call(draft, field)) {
+                            $form.find('[name="' + field + '"]').val(draft[field]);
+                        }
+                    });
+                } catch (err) {
+                    window.localStorage.removeItem(storageKey);
+                }
+            }
+
+            function clearDraft() {
+                if (!storageAvailable) {
+                    return;
+                }
+
+                window.localStorage.removeItem(storageKey);
+            }
+
+            function resetFeedback() {
+                $feedback.attr('class', 'hidden rounded-lg border px-4 py-3 text-sm').text('');
+            }
+
+            function showFeedback(type, message) {
+                const base = 'rounded-lg border px-4 py-3 text-sm';
+                const classes = type === 'success'
+                    ? base + ' border-green-300 bg-green-50 text-green-700'
+                    : base + ' border-red-300 bg-red-50 text-red-700';
+                $feedback.attr('class', classes).text(message);
+            }
+
+            function hideFieldError(name) {
+                $form.find('[data-error-for="' + name + '"]').each(function () {
+                    $(this).text('').addClass('hidden');
+                });
+            }
+
+            function clearAllFieldErrors() {
+                $form.find('[data-error-for]').each(function () {
+                    $(this).text('').addClass('hidden');
+                });
+            }
+
+            function showFieldError(name, messages) {
+                if (!messages || messages.length === 0) {
+                    return;
+                }
+
+                const text = Array.isArray(messages) ? messages.join(' ') : messages;
+                $form.find('[data-error-for="' + name + '"]').first().text(text).removeClass('hidden');
+            }
+
+            function isValidUrl(value) {
+                try {
+                    const url = new URL(value);
+                    return url.protocol === 'http:' || url.protocol === 'https:';
+                } catch (err) {
+                    return false;
+                }
+            }
+
+            function toggleSubmittingState(isSubmitting) {
+                if (isSubmitting) {
+                    $submitButton.prop('disabled', true).addClass('opacity-70 cursor-not-allowed');
+                    if (!$submitButton.data('original-text')) {
+                        $submitButton.data('original-text', $submitButton.text());
+                    }
+                    $submitButton.text('Guardando...');
+                } else {
+                    const originalText = $submitButton.data('original-text');
+                    if (originalText) {
+                        $submitButton.text(originalText);
+                    }
+                    $submitButton.prop('disabled', false).removeClass('opacity-70 cursor-not-allowed');
+                }
+            }
+
+            $form.on('input change', 'input, textarea, select', function () {
+                const fieldName = this.name || this.id;
+                hideFieldError(fieldName);
+                resetFeedback();
+                saveDraft();
+            });
+
+            loadDraft();
+
+            $form.on('submit', function (event) {
+                event.preventDefault();
+
+                clearAllFieldErrors();
+                resetFeedback();
+
+                let isValid = true;
+
+                requiredFields.forEach(function (field) {
+                    const value = ($form.find('[name="' + field.name + '"]').val() || '').toString().trim();
+                    if (!value) {
+                        showFieldError(field.name, field.message);
+                        isValid = false;
+                    }
+                });
+
+                const repoValue = ($form.find('[name="RepositoryUrl"]').val() || '').toString().trim();
+                const filesInput = $form.find('input[name="Attachments"]')[0];
+                const files = filesInput ? filesInput.files : [];
+                let totalSize = 0;
+                for (let i = 0; i < files.length; i += 1) {
+                    totalSize += files[i].size;
+                }
+
+                const hasRepository = repoValue.length > 0;
+                const hasAttachment = files && files.length > 0;
+
+                if (!hasRepository && !hasAttachment) {
+                    showFieldError('RepositoryOrAttachment', 'Proporcione un enlace al repositorio o adjunte su proyecto.');
+                    isValid = false;
+                }
+
+                if (hasRepository && !isValidUrl(repoValue)) {
+                    showFieldError('RepositoryUrl', 'Introduce una URL válida (http o https).');
+                    isValid = false;
+                }
+
+                if (totalSize > maxTotalSize) {
+                    const sizeInMb = Math.round((totalSize / (1024 * 1024)) * 10) / 10;
+                    showFieldError('Attachments', 'El tamaño total de los archivos supera los 50MB (' + sizeInMb + 'MB).');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    return;
+                }
+
+                const formData = new FormData($form[0]);
+                const requestVerificationToken = $form.find('input[name="__RequestVerificationToken"]').val();
+
+                toggleSubmittingState(true);
+
+                $.ajax({
+                    url: $form.data('submit-url'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'RequestVerificationToken': requestVerificationToken
+                    }
+                })
+                    .done(function (response) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        if (response && response.success) {
+                            showFeedback('success', response.message || 'Proyecto guardado correctamente.');
+                            $form[0].reset();
+                            clearDraft();
+                        } else {
+                            showFeedback('error', (response && response.message) || 'No se pudo guardar su proyecto.');
+                        }
+                    })
+                    .fail(function (xhr) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        let errorMessage = 'No se pudo guardar su proyecto.';
+
+                        if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            const errors = xhr.responseJSON.errors;
+                            Object.keys(errors).forEach(function (key) {
+                                showFieldError(key, errors[key]);
+                            });
+                            errorMessage = 'Revisa los campos marcados para continuar.';
+                        } else if (xhr.status === 401) {
+                            errorMessage = 'Tu sesión expiró. Inicia sesión nuevamente.';
+                        }
+
+                        showFeedback('error', errorMessage);
+                    })
+                    .always(function () {
+                        toggleSubmittingState(false);
+                    });
+            });
+        })(jQuery);
+    </script>
+}

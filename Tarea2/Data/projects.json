@@ -1,0 +1,1082 @@
+{
+  "recentSlugs": [
+    "design-thinking-1",
+    "laboratorio-prototipado-rapido",
+    "sistema-recomendacion-textil",
+    "algoritmo-ordenamiento-avanzado",
+    "diseno-interfaz-usuario-intuitiva",
+    "simulacion-entorno-virtual"
+  ],
+  "projects": [
+    {
+      "slug": "algoritmo-ordenamiento-avanzado",
+      "title": "Algoritmo de Ordenamiento Avanzado",
+      "description": "Un algoritmo eficiente para ordenar grandes conjuntos de datos.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA-elvci0w2aTzrW8I5gkNGRWJI0TjK-qf2KJj-GNiyWx-KOInMYOF7LogTXyk1-XYsE496vPmIQlJeQi6N72d6-LyPGMm5eF4n888wC9JFAR9kCPjtkPEuoepDAUQiDJrQ5EuZuXZ_ePVmqWXXoTfAYaQf5CYkN8nl2KJ6b9ywXZ5znOwSAWjHbSEbgrWuwkvGgN-xzTP_H06Gc5T940ULW1c0AWmzcHicfyJW-iafBljGueFzEttfmPQN1_8z1NMzttEcZyfwDOU",
+      "technology": "Python",
+      "rating": 4.5,
+      "reviewCount": 2,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Implementaci\u00F3n optimizada de un algoritmo de ordenamiento h\u00EDbrido que combina estrategias divide-and-conquer con paralelizaci\u00F3n para conjuntos de datos masivos.",
+      "attachments": [
+        {
+          "fileName": "AlgoritmoOrdenamiento.docx",
+          "fileType": "Documento",
+          "downloadUrl": "#"
+        }
+      ],
+      "ratingBreakdown": [
+        {
+          "stars": 5,
+          "percentage": 50
+        },
+        {
+          "stars": 4,
+          "percentage": 50
+        },
+        {
+          "stars": 3,
+          "percentage": 0
+        },
+        {
+          "stars": 2,
+          "percentage": 0
+        },
+        {
+          "stars": 1,
+          "percentage": 0
+        }
+      ],
+      "reviews": [
+        {
+          "reviewerName": "Mar\u00EDa Gonz\u00E1lez",
+          "avatarUrl": "https://randomuser.me/api/portraits/women/52.jpg",
+          "timeAgo": "Hace 5 d\u00EDas",
+          "rating": 5,
+          "comment": "Excelente desempe\u00F1o al ordenar millones de registros en segundos. El informe explica con claridad la complejidad y los escenarios de prueba.",
+          "upVotes": 6,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Jorge Ram\u00EDrez",
+          "avatarUrl": "https://randomuser.me/api/portraits/men/33.jpg",
+          "timeAgo": "Hace 2 semanas",
+          "rating": 4,
+          "comment": "Muy \u00FAtil para sistemas de recomendaci\u00F3n. Ser\u00EDa interesante comparar con radix sort en datasets altamente distribuidos.",
+          "upVotes": 4,
+          "downVotes": 1
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "4.5"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "2"
+        }
+      ],
+      "authorUsername": "mherrera",
+      "authorDisplayName": "Mario Herrera"
+    },
+    {
+      "slug": "diseno-interfaz-usuario-intuitiva",
+      "title": "Dise\u00F1o de Interfaz de Usuario Intuitiva",
+      "description": "Una interfaz de usuario dise\u00F1ada para la m\u00E1xima usabilidad.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuBGnSdkA27HyaI36YQt58XRhfxC_K5TfkuPq-MrU4pcNZGS8mIB46dM7_WHEB4z1HqqxKaGGkyaXS2KgEGoMYljv6kRQ90WhDYC4XqBrewuiwXjhyzRy1J85l9g7a4mo4xb6c3ePVI7SmIJZ1Bv4AAZDb3U4tzftIg1mgi0lTk3fL97JI_u4NHxc3Ntf-iUygqtLbx3IasRe09UeGUJ3JhtLul_1P4d5qZHS3SrBSLRZfCULMF3yKxRW0qKfxX1urBiGiUBQl-Gy0o",
+      "technology": "React",
+      "rating": 4.6,
+      "reviewCount": 5,
+      "taskType": "Dise\u00F1o UI",
+      "difficulty": "Intermedio",
+      "languages": [
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "overview": "Prototipo de experiencia de usuario centrado en la accesibilidad, con pruebas A/B y m\u00E9tricas de usabilidad documentadas.",
+      "attachments": [
+        {
+          "fileName": "UIStyleGuide.fig",
+          "fileType": "Dise\u00F1o",
+          "downloadUrl": "#"
+        }
+      ],
+      "ratingBreakdown": [
+        {
+          "stars": 5,
+          "percentage": 60
+        },
+        {
+          "stars": 4,
+          "percentage": 40
+        },
+        {
+          "stars": 3,
+          "percentage": 0
+        },
+        {
+          "stars": 2,
+          "percentage": 0
+        },
+        {
+          "stars": 1,
+          "percentage": 0
+        }
+      ],
+      "reviews": [
+        {
+          "reviewerName": "Ana Dur\u00E1n",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Ana\u002BDur%C3%A1n\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-03T13:46:03Z",
+          "rating": 5,
+          "comment": "El flujo est\u00E1 muy bien pensado y las microinteracciones elevan toda la experiencia.",
+          "upVotes": 7,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Mateo Castillo",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Mateo\u002BCastillo\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "Hace 4 d\u00EDas",
+          "rating": 4,
+          "comment": "La navegaci\u00F3n lateral funciona, aunque en m\u00F3vil podr\u00EDa compactarse un poco m\u00E1s.",
+          "upVotes": 3,
+          "downVotes": 1
+        },
+        {
+          "reviewerName": "Luc\u00EDa Paredes",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Luc%C3%ADa\u002BParedes\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-09-29T16:46:03Z",
+          "rating": 5,
+          "comment": "Me gust\u00F3 c\u00F3mo documentaste los componentes reutilizables y los estados vac\u00EDos.",
+          "upVotes": 5,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Hugo Villalobos",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Hugo\u002BVillalobos\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "Hace 2 semanas",
+          "rating": 4,
+          "comment": "Gran atenci\u00F3n a accesibilidad. Quiz\u00E1s faltan ejemplos de modo oscuro.",
+          "upVotes": 2,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne\u002BFleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-09-26T16:46:03Z",
+          "rating": 5,
+          "comment": "Document\u00E9 cada decisi\u00F3n para probar distintos escenarios de usabilidad.",
+          "upVotes": 4,
+          "downVotes": 0
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "4.6"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "5"
+        }
+      ],
+      "authorUsername": "raianne",
+      "authorDisplayName": "Raianne Fleury"
+    },
+    {
+      "slug": "simulacion-entorno-virtual",
+      "title": "Simulaci\u00F3n de Entorno Virtual",
+      "description": "Un entorno virtual simulado para pruebas de software.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCgg4WgyZYNfMrn1PKR8ju9B82Lua3m0bHgrq6NqX4BAZkECZ7ZMcvjZVzSxmvdNpBfEKNV2F3KYWf3Lsxd_t5a6HlybHYUwltvtt0q2nZSgBUl3EIa53tTKRr8uM6XzxLfEpsIuhD7x74DdCDYpXcIIAN8SRcKjhdyuC22HkB8YtDRNtvdS_5YMz6eLU7f2RmdoJHQae_uCpDiJKFMDWbUjRqRfCjkolSTYZ26HOgqlFd72vLalGtIvx4UOtmQpiV6rcO9vXPdczY",
+      "technology": "C\u002B\u002B",
+      "rating": 3.69,
+      "reviewCount": 13,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Entorno 3D para validar software cr\u00EDtico en condiciones controladas, con scripts automatizados y m\u00E9tricas de rendimiento.",
+      "attachments": [
+        {
+          "fileName": "Manual_Simulacion.pdf",
+          "fileType": "PDF",
+          "downloadUrl": "#"
+        }
+      ],
+      "ratingBreakdown": [
+        {
+          "stars": 5,
+          "percentage": 62
+        },
+        {
+          "stars": 4,
+          "percentage": 8
+        },
+        {
+          "stars": 3,
+          "percentage": 0
+        },
+        {
+          "stars": 2,
+          "percentage": 0
+        },
+        {
+          "stars": 1,
+          "percentage": 31
+        }
+      ],
+      "reviews": [
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:34:57.9478630Z",
+          "rating": 5,
+          "comment": "otro",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:34:50.9331900Z",
+          "rating": 5,
+          "comment": "hola",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:29:53.8565120Z",
+          "rating": 5,
+          "comment": "dfsdfs",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:29:38.7972020Z",
+          "rating": 5,
+          "comment": "tfgfhgfhj",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:23:54.4160170Z",
+          "rating": 5,
+          "comment": "Hola, Buen test",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:17:44.3866350Z",
+          "rating": 1,
+          "comment": "tetsfa",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:17:39.2726330Z",
+          "rating": 1,
+          "comment": "tes",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:17:32.7379550Z",
+          "rating": 1,
+          "comment": "hola,hola",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:12:16.5977200Z",
+          "rating": 1,
+          "comment": "test,tefjdskfljsd",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:11:44.9846020Z",
+          "rating": 5,
+          "comment": "Buenas Buenas",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T07:11:17.4615060Z",
+          "rating": 5,
+          "comment": "test",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Andrea Ruiz",
+          "avatarUrl": "https://randomuser.me/api/portraits/women/66.jpg",
+          "timeAgo": "Hace 4 d\u00EDas",
+          "rating": 5,
+          "comment": "Permite validar escenarios de estr\u00E9s antes del despliegue. La documentaci\u00F3n t\u00E9cnica es clara y detallada.",
+          "upVotes": 7,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Gabriel Ortiz",
+          "avatarUrl": "https://randomuser.me/api/portraits/men/42.jpg",
+          "timeAgo": "Hace 1 mes",
+          "rating": 4,
+          "comment": "Gran soporte para scripts automatizados. Me gustar\u00EDa ver m\u00E9tricas comparativas con hardware diferente.",
+          "upVotes": 2,
+          "downVotes": 1
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "3.7"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "13"
+        }
+      ],
+      "authorUsername": "cflores",
+      "authorDisplayName": "Carlos Flores"
+    },
+    {
+      "slug": "simulador-trafico-urbano",
+      "title": "Simulador de Tr\u00E1fico Urbano",
+      "description": "Simulaci\u00F3n del flujo de tr\u00E1fico en una ciudad.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuDm7JXt7lCx_lOtGaCKUT0s72ezdKgB9LzKsMRoQbhl3cg1nu_zsW3K-4MiU-AIgv87SBrEOOTYc960KB9J8bZoOtX1SdaJbyuXMx7UOkW4P6eWKx_gQHV5CiQugQHcCcero-7hRnxbonEUGN7JaTIykcIMMHNao0uiTKHsZE83Lx6U9Fh9sZCNOo8ZP29uCS5jcQ6laRhT9J1G3NN-3n5MxxlwPBkd4x1goiDntzK3qWBDksP1PlvyP1sDFh6_6EiuPFdPyidF0MA",
+      "technology": "JavaScript",
+      "rating": 4.33,
+      "reviewCount": 3,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Este proyecto modela el comportamiento del tr\u00E1fico urbano utilizando datos en tiempo real para optimizar sem\u00E1foros y reducir la congesti\u00F3n.",
+      "attachments": [
+        {
+          "fileName": "Memoria_Trafico_Urbano.pdf",
+          "fileType": "PDF",
+          "downloadUrl": "#"
+        },
+        {
+          "fileName": "Modelo_Simulacion.pptx",
+          "fileType": "Presentaci\u00F3n",
+          "downloadUrl": "#"
+        }
+      ],
+      "ratingBreakdown": [
+        {
+          "stars": 5,
+          "percentage": 33
+        },
+        {
+          "stars": 4,
+          "percentage": 67
+        },
+        {
+          "stars": 3,
+          "percentage": 0
+        },
+        {
+          "stars": 2,
+          "percentage": 0
+        },
+        {
+          "stars": 1,
+          "percentage": 0
+        }
+      ],
+      "reviews": [
+        {
+          "reviewerName": "Sophia Clark",
+          "avatarUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuBJJAFkjhTAZ5Tj5Xw4Fwxr3u9N5mb5jqzCt-bkUOwYPHmuNIPFooM5odJLtmmoRoQqBEUXnquMcmea4_9uylBh8R_i5utYXyZhDf-ErQ51GKLrnu3LFzt2Dh1tg0AvJkKbC7cr_apdrQZTmw8UwJGSFAh1tYAtrNYJP7YJxlsZmAgPEoD5VejfjVuYXni-yZdtprMBtkeNa2IZClCyx4UecWFLdIEYeOqUfML8KagZbu1fy4gifQMdY5PNzx2CWx89OpPtsIOs1Z8",
+          "timeAgo": "Hace 2 semanas",
+          "rating": 5,
+          "comment": "La simulaci\u00F3n permite visualizar embotellamientos y evaluar diferentes estrategias de semaforizaci\u00F3n.",
+          "upVotes": 8,
+          "downVotes": 1
+        },
+        {
+          "reviewerName": "Ethan Bennett",
+          "avatarUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD4pdwvBHaTKfwT3gttcFztKdqEXILOm-7p9ioem8iKTVODBmaP1uIrAspx21VaiVcPhCMdy-McJ9EGU8m100jbi8WNtuoYax0u7TlbulSnF6eu_-5e44Q-J9ksMBpsM6ir2w6KXstHJW5JHK0U5uLgINCIaTBYxMbiZ34Hfic-y5LNSsnx0ezjADEaHx_Aryww6if2qZL5PXQhd5xEEaoIG30jPpKq9rrS7HBhm5kleqia9EGze_DPtaF-M4_cnPj_Ql6CL-Y6k1E",
+          "timeAgo": "Hace 3 semanas",
+          "rating": 4,
+          "comment": "Excelente representaci\u00F3n visual y an\u00E1lisis. Ser\u00EDa \u00FAtil contar con datos en vivo para enriquecer todav\u00EDa m\u00E1s la plataforma.",
+          "upVotes": 5,
+          "downVotes": 2
+        },
+        {
+          "reviewerName": "Olivia Carter",
+          "avatarUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuDR3hoLtimmeqTWbmn5Xwo8njTcKpsIjH_yrsPm9GvHdkBLZRRUQIWx00-hX-mCVmuYMTxX6wAcHAJf0bvJvhtWNix898K5Z419-zYQ10EqBt-HDfKaAi83cSPe6RP-3dTI0Rob-0VbCNEsUi1HrNkeJcCgCk5O9OKaIZjlmbmLcXSstIsxWbwvckIAJWhEkWUbw3glc0kOALb6z-gC41_qBMzw2vE_3AIUnFuSv_qOqcrhTVCWUxGi4IVOu1UB2L85oawtNgd5Hvs",
+          "timeAgo": "Hace 1 mes",
+          "rating": 4,
+          "comment": "Muy completo y con buena documentaci\u00F3n t\u00E9cnica. Sugiero agregar resultados de pruebas con diferentes vol\u00FAmenes de tr\u00E1fico.",
+          "upVotes": 3,
+          "downVotes": 0
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "4.3"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "3"
+        }
+      ],
+      "authorUsername": "lmartinez",
+      "authorDisplayName": "Lucia Martinez"
+    },
+    {
+      "slug": "gestion-tareas",
+      "title": "Aplicaci\u00F3n de Gesti\u00F3n de Tareas",
+      "description": "Aplicaci\u00F3n para organizar tareas diarias.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuBDeZzKGYRiDnDg9gY9CoZj0QCBZUU40Ytdgv-9i-SPmOO0jIoYglx1v5IJuCrJ5Tq0ZgID7geLzcpF7OLBtm5H_xmJoQUJMPokzJgHgg_KtYgL9vGmOJhbV0WbdSyUgXw-SAqVw6WFLk6Nb4c9ITUxSoLlnHRxdNM8s8w1Iym0KShvD-QBJb5blbXCiTZmK5Ra7taSjwCFLm1bAsQT0nLqbJjdQ7XoYWaJNvXoRsdFZb5yyr96byhe-MlFnKsMrLdzWUfp-bjaojw",
+      "technology": "Vue",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Aplicaci\u00F3n web responsiva para organizar tareas con sincronizaci\u00F3n en tiempo real y soporte offline.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "arodriguez",
+      "authorDisplayName": "Ana Rodriguez"
+    },
+    {
+      "slug": "analizador-sentimientos",
+      "title": "Analizador de Sentimientos",
+      "description": "An\u00E1lisis de opiniones en redes sociales.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCZbkvdcGGy4JdPGpIDUNbpfqnaA14UPa2vtd0EmUuJIOs9yFNHYctuiWml0nebTNMvtgf-9o4hZSQ7tUttmggwRWF4c1igMazCrU03-6IpDmi7nJuVvFZlqdJfdO32pG1STnc8IsAdtcrEkVUg30ybOwcgOJvsZOcoDIEHPAkZ-yE5NEVG4cgFFuHGsI8SMPMqQKI76bDaFwfAWVDtUepG3ePNpENRSUlMz2LrUzJXug086D5-HWiWPMGrqUNOeyX-oLQ0UitpyQc",
+      "technology": "Python",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Modelo de an\u00E1lisis de sentimientos entrenado con corpus en espa\u00F1ol para categorizar opiniones.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "mherrera",
+      "authorDisplayName": "Mario Herrera"
+    },
+    {
+      "slug": "plataforma-aprendizaje",
+      "title": "Plataforma de Aprendizaje",
+      "description": "Plataforma interactiva para aprender idiomas.",
+      "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuAV1K3fkTC7GSPfigu2r5zQ9SM-jpYLXdp0asf8LXxo2d2sND0IcgzcAbbd45nUywhjAyKA3abAKrt_Zh7Exn6sxLCwaNcQvQP4qUyx2NeelqVdrN3ceLyvwvenXvTg8nPeVLELRPye_9GR_dk6xMO8gmzHEet8m-EqVsO7hqNSHJhxPGUrr9X2UbEVeIYqfnfrD6Lmo9QwhxPCqWuLiCziIMUlpZD00aLrCmR7b2-eLExD4XFAIrEpamCCpW5UHNUxYNJU614T-lo",
+      "technology": "Angular",
+      "rating": 3.86,
+      "reviewCount": 7,
+      "taskType": "Aplicaciones Web",
+      "difficulty": "Avanzado",
+      "languages": [
+        "Angular",
+        "TypeScript",
+        "Firebase"
+      ],
+      "overview": "Plataforma de aprendizaje con gamificaci\u00F3n y evaluaciones adaptativas.",
+      "attachments": [],
+      "ratingBreakdown": [
+        {
+          "stars": 5,
+          "percentage": 29
+        },
+        {
+          "stars": 4,
+          "percentage": 57
+        },
+        {
+          "stars": 3,
+          "percentage": 0
+        },
+        {
+          "stars": 2,
+          "percentage": 0
+        },
+        {
+          "stars": 1,
+          "percentage": 14
+        }
+      ],
+      "reviews": [
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T19:16:02.9729050Z",
+          "rating": 1,
+          "comment": "Malo",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Raianne Fleury",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Raianne%20Fleury\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T19:15:06.2994960Z",
+          "rating": 4,
+          "comment": "etertertertert",
+          "upVotes": 0,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Camila Arrieta",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Camila\u002BArrieta\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-04T11:46:03Z",
+          "rating": 4,
+          "comment": "El tablero de progreso motiva bastante. \u00BFPlaneas agregar retos semanales?",
+          "upVotes": 6,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Diego Sandoval",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Diego\u002BSandoval\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "Hace 3 d\u00EDas",
+          "rating": 5,
+          "comment": "Excelente uso de gamificaci\u00F3n y rutas adaptativas. Las m\u00E9tricas est\u00E1n claras.",
+          "upVotes": 8,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Isabella Mu\u00F1oz",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Isabella\u002BMu%C3%B1oz\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-09-30T15:46:03Z",
+          "rating": 4,
+          "comment": "Me encanta el m\u00F3dulo de pr\u00E1ctica oral con feedback autom\u00E1tico.",
+          "upVotes": 5,
+          "downVotes": 1
+        },
+        {
+          "reviewerName": "Sof\u00EDa Trejo",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Sof%C3%ADa\u002BTrejo\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "Hace 1 semana",
+          "rating": 5,
+          "comment": "Muy \u00FAtil la integraci\u00F3n con calendarios para agendar tutor\u00EDas.",
+          "upVotes": 4,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Alonso Varela",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Alonso\u002BVarela\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-09-23T16:46:03Z",
+          "rating": 4,
+          "comment": "Funciona genial en desktop. En tablet algunos botones quedan muy separados.",
+          "upVotes": 3,
+          "downVotes": 1
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "3.9"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "7"
+        }
+      ],
+      "authorUsername": "raianne",
+      "authorDisplayName": "Raianne Fleury"
+    },
+    {
+      "slug": "dashboard-analitica-empresarial",
+      "title": "Dashboard de Anal\u00EDtica Empresarial",
+      "description": "Panel interactivo para monitorear indicadores clave.",
+      "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format\u0026fit=crop\u0026w=800\u0026q=80",
+      "technology": "TypeScript",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Dashboard configurable para seguimiento de KPIs en tiempo real.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "cflores",
+      "authorDisplayName": "Carlos Flores"
+    },
+    {
+      "slug": "motor-recomendaciones",
+      "title": "Motor de Recomendaciones",
+      "description": "Sistema que sugiere contenido basado en machine learning.",
+      "imageUrl": "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format\u0026fit=crop\u0026w=800\u0026q=80",
+      "technology": "Python",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Motor de recomendaciones h\u00EDbrido con filtrado colaborativo y basado en contenido.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "lmartinez",
+      "authorDisplayName": "Lucia Martinez"
+    },
+    {
+      "slug": "plataforma-crowdfunding",
+      "title": "Plataforma de Crowdfunding",
+      "description": "Sitio web para recaudar fondos y apoyar proyectos creativos.",
+      "imageUrl": "https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format\u0026fit=crop\u0026w=800\u0026q=80",
+      "technology": "Laravel",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Plataforma con pagos integrados y panel de seguimiento para campa\u00F1as de crowdfunding.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "arodriguez",
+      "authorDisplayName": "Ana Rodriguez"
+    },
+    {
+      "slug": "gestor-inventario-inteligente",
+      "title": "Gestor de Inventario Inteligente",
+      "description": "Soluci\u00F3n para controlar stock y pronosticar demanda.",
+      "imageUrl": "https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format\u0026fit=crop\u0026w=800\u0026q=80",
+      "technology": "React",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Gestor de inventario con an\u00E1lisis predictivo y alertas autom\u00E1ticas.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "mherrera",
+      "authorDisplayName": "Mario Herrera"
+    },
+    {
+      "slug": "simulador-robots-autonomos",
+      "title": "Simulador de Robots Aut\u00F3nomos",
+      "description": "Ambiente virtual para probar algoritmos de rob\u00F3tica.",
+      "imageUrl": "https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?auto=format\u0026fit=crop\u0026w=800\u0026q=80",
+      "technology": "C\u002B\u002B",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Simulador de robots aut\u00F3nomos con escenarios configurables y m\u00E9tricas de desempe\u00F1o.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "cflores",
+      "authorDisplayName": "Carlos Flores"
+    },
+    {
+      "slug": "app-finanzas-personales",
+      "title": "App de Finanzas Personales",
+      "description": "Herramienta m\u00F3vil para controlar gastos y presupuestos.",
+      "imageUrl": "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?auto=format\u0026fit=crop\u0026w=800\u0026q=80",
+      "technology": "Flutter",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Aplicaci\u00F3n m\u00F3vil para gestionar finanzas con sincronizaci\u00F3n en la nube.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "lmartinez",
+      "authorDisplayName": "Lucia Martinez"
+    },
+    {
+      "slug": "red-social-fotografos",
+      "title": "Red Social para Fot\u00F3grafos",
+      "description": "Comunidad para compartir portafolios y recibir feedback.",
+      "imageUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format\u0026fit=crop\u0026w=800\u0026q=80",
+      "technology": "Next.js",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "",
+      "difficulty": "",
+      "languages": [],
+      "overview": "Red social especializada para fot\u00F3grafos con retos semanales y feedback colaborativo.",
+      "attachments": [],
+      "ratingBreakdown": [],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "arodriguez",
+      "authorDisplayName": "Ana Rodriguez"
+    },
+    {
+      "slug": "laboratorio-prototipado-rapido",
+      "title": "Laboratorio de Prototipado R\u00E1pido",
+      "description": "Bit\u00E1cora que centraliza experimentos de UI y pruebas con usuarios en ciclos semanales.",
+      "imageUrl": "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format\u0026fit=crop\u0026w=1200\u0026q=80",
+      "technology": "Figma \u00B7 Storybook \u00B7 Node.js",
+      "rating": 4.6,
+      "reviewCount": 5,
+      "taskType": "Investigaci\u00F3n UX",
+      "difficulty": "Intermedio",
+      "languages": [
+        "Figma",
+        "Node.js",
+        "Storybook"
+      ],
+      "overview": "Incluye gu\u00EDas de estilo, experimentos A/B, integraciones con Storybook y reportes automatizados de accesibilidad.",
+      "attachments": [
+        {
+          "fileName": "Bitacora_Experimentacion.pdf",
+          "fileType": "Documento",
+          "downloadUrl": "#"
+        }
+      ],
+      "ratingBreakdown": [
+        {
+          "stars": 5,
+          "percentage": 60
+        },
+        {
+          "stars": 4,
+          "percentage": 40
+        },
+        {
+          "stars": 3,
+          "percentage": 0
+        },
+        {
+          "stars": 2,
+          "percentage": 0
+        },
+        {
+          "stars": 1,
+          "percentage": 0
+        }
+      ],
+      "reviews": [
+        {
+          "reviewerName": "Brenda Molina",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Brenda\u002BMolina\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-05T04:46:03Z",
+          "rating": 5,
+          "comment": "El pipeline de validaci\u00F3n con Figma y Storybook es oro puro.",
+          "upVotes": 9,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Carlos Ib\u00E1\u00F1ez",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Carlos\u002BIb%C3%A1%C3%B1ez\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "Hace 2 d\u00EDas",
+          "rating": 4,
+          "comment": "Quiz\u00E1s podr\u00EDas automatizar los reportes de pruebas con Lighthouse.",
+          "upVotes": 4,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Paula G\u00F3mez",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Paula\u002BG%C3%B3mez\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-01T16:46:03Z",
+          "rating": 5,
+          "comment": "Excelente c\u00F3mo reutilizas tokens de dise\u00F1o entre web y m\u00F3vil.",
+          "upVotes": 6,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Andr\u00E9s Lozano",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Andr%C3%A9s\u002BLozano\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "Hace 9 d\u00EDas",
+          "rating": 5,
+          "comment": "Los experimentos A/B quedaron s\u00FAper claros en la bit\u00E1cora.",
+          "upVotes": 3,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Daniela Jara",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Daniela\u002BJara\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-09-20T16:46:03Z",
+          "rating": 4,
+          "comment": "Gran trabajo con la automatizaci\u00F3n de handoff a desarrollo.",
+          "upVotes": 2,
+          "downVotes": 1
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "4.6"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "5"
+        }
+      ],
+      "authorUsername": "raianne",
+      "authorDisplayName": "Raianne Fleury"
+    },
+    {
+      "slug": "sistema-recomendacion-textil",
+      "title": "Sistema de Recomendaci\u00F3n Textil",
+      "description": "Motor de recomendaciones que combina embeddings de estilo y compras hist\u00F3ricas.",
+      "imageUrl": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format\u0026fit=crop\u0026w=1200\u0026q=80",
+      "technology": "Python \u00B7 FastAPI \u00B7 TensorFlow",
+      "rating": 4.6,
+      "reviewCount": 5,
+      "taskType": "Inteligencia Artificial",
+      "difficulty": "Avanzado",
+      "languages": [
+        "Python",
+        "TensorFlow",
+        "FastAPI"
+      ],
+      "overview": "Pipeline de datos en tiempo real con segmentaci\u00F3n inteligente, panel anal\u00EDtico y pruebas offline/online documentadas.",
+      "attachments": [
+        {
+          "fileName": "Reporte_Metricas.csv",
+          "fileType": "Dataset",
+          "downloadUrl": "#"
+        }
+      ],
+      "ratingBreakdown": [
+        {
+          "stars": 5,
+          "percentage": 60
+        },
+        {
+          "stars": 4,
+          "percentage": 40
+        },
+        {
+          "stars": 3,
+          "percentage": 0
+        },
+        {
+          "stars": 2,
+          "percentage": 0
+        },
+        {
+          "stars": 1,
+          "percentage": 0
+        }
+      ],
+      "reviews": [
+        {
+          "reviewerName": "Elena R\u00EDos",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Elena\u002BR%C3%ADos\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-10-04T16:46:03Z",
+          "rating": 5,
+          "comment": "El modelo h\u00EDbrido personaliza con mucha precisi\u00F3n los cat\u00E1logos.",
+          "upVotes": 7,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Juli\u00E1n Peralta",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Juli%C3%A1n\u002BPeralta\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "Hace 5 d\u00EDas",
+          "rating": 4,
+          "comment": "Me gustar\u00EDa ver m\u00E9tricas de recall adem\u00E1s del NDCG.",
+          "upVotes": 3,
+          "downVotes": 1
+        },
+        {
+          "reviewerName": "Mar\u00EDa Fernanda Soto",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Mar%C3%ADa\u002BFernanda\u002BSoto\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-09-28T10:46:03Z",
+          "rating": 5,
+          "comment": "Buen balance entre datos propios y tendencias globales.",
+          "upVotes": 5,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Ricardo Manr\u00EDquez",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Ricardo\u002BManr%C3%ADquez\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "Hace 2 semanas",
+          "rating": 4,
+          "comment": "La visualizaci\u00F3n con filtros por temporada qued\u00F3 incre\u00EDble.",
+          "upVotes": 4,
+          "downVotes": 0
+        },
+        {
+          "reviewerName": "Gabriela Le\u00F3n",
+          "avatarUrl": "https://api.dicebear.com/7.x/initials/svg?seed=Gabriela\u002BLe%C3%B3n\u0026backgroundType=gradientLinear\u0026backgroundColor=fb923c,facc15",
+          "timeAgo": "2025-09-17T16:46:03Z",
+          "rating": 5,
+          "comment": "El m\u00F3dulo de recomendaciones colaborativas procesa millones de filas sin problema.",
+          "upVotes": 6,
+          "downVotes": 0
+        }
+      ],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "4.6"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "5"
+        }
+      ],
+      "authorUsername": "raianne",
+      "authorDisplayName": "Raianne Fleury"
+    },
+    {
+      "slug": "design-thinking-1",
+      "title": "Design Thinking",
+      "description": "fwefwef",
+      "imageUrl": "https://via.placeholder.com/400x300?text=Proyecto",
+      "technology": "HTML",
+      "rating": 0,
+      "reviewCount": 0,
+      "taskType": "Dise\u00F1o Ui",
+      "difficulty": "Principiante",
+      "languages": [
+        "HTML"
+      ],
+      "overview": "fwefwef",
+      "attachments": [],
+      "ratingBreakdown": [
+        {
+          "stars": 5,
+          "percentage": 0
+        },
+        {
+          "stars": 4,
+          "percentage": 0
+        },
+        {
+          "stars": 3,
+          "percentage": 0
+        },
+        {
+          "stars": 2,
+          "percentage": 0
+        },
+        {
+          "stars": 1,
+          "percentage": 0
+        }
+      ],
+      "reviews": [],
+      "metrics": [
+        {
+          "label": "Calificaci\u00F3n Promedio",
+          "value": "0.0"
+        },
+        {
+          "label": "N\u00FAmero de Revisiones",
+          "value": "0"
+        }
+      ],
+      "authorUsername": "raianne",
+      "authorDisplayName": "Raianne Fleury"
+    }
+  ]
+}
